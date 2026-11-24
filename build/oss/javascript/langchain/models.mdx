@@ -7,6 +7,8 @@ boost: 2
 
 import ChatModelTabsPy from '/snippets/javascript/chat-model-tabs.mdx';
 import ChatModelTabsJS from '/snippets/javascript/chat-model-tabs-js.mdx';
+import ModelsParallelToolCallsPy from '/snippets/javascript/code-samples/models-parallel-tool-calls-py.mdx';
+import ModelsParallelToolCallsJs from '/snippets/javascript/code-samples/models-parallel-tool-calls-js.mdx';
 
 [LLMs](https://en.wikipedia.org/wiki/Large_language_model) are powerful AI tools that can interpret and generate text like humans. They're versatile enough to write content, translate languages, summarize, and answer questions without needing specialized training for each task.
 
@@ -123,16 +125,18 @@ const model = await initChatModel(
 
 ### Connection resilience
 
-LangChain chat models automatically retry failed API requests with exponential backoff. By default, models retry up to **6 times** for network errors, rate limits (429), and server errors (5xx). Client errors like 401 (unauthorized) or 404 are not retried.
+Most LangChain chat model integrations automatically retry failed API requests with exponential backoff. They retry network errors, rate limits (429), and server errors (5xx). Client errors like 401 (unauthorized) or 404 are not retried.
 
 
+
+By default, models retry up to **6 times**.
 
 You can adjust `maxRetries` and `timeout` when creating a model, then pass that instance to `createAgent`, `createDeepAgent`, or call it standalone:
 
 ```typescript
 import { initChatModel } from "langchain";
 
-const model = await initChatModel("google:gemini-3.6-flash", {
+const model = await initChatModel("google:gemini-4-hydrogen", {
   maxRetries: 10, // Increase for unreliable networks (default: 6)
   timeout: 120_000, // Milliseconds; increase for slow connections
 });
@@ -278,7 +282,7 @@ The resulting message can be treated the same as a message that was generated wi
         This simplifies filtering based on event types and other metadata, and will aggregate the full message in the background. See below for an example.
 
         ```typescript
-        const stream = await model.streamEvents("Hello");
+        const stream = await model.streamEvents("Hello", { version: "v2" });
         for await (const event of stream) {
             if (event.event === "on_chat_model_start") {
                 console.log(`Input: ${event.data.input}`);
@@ -429,7 +433,7 @@ const getWeather = tool(
   },
 );
 
-const model = new ChatOpenAI({ model: "gpt-5.5" });
+const model = new ChatOpenAI({ model: "gpt-6.1-sol" });
 const modelWithTools = model.bindTools([getWeather]);  // [!code highlight]
 
 const response = await modelWithTools.invoke("What's the weather like in Boston?");
@@ -532,10 +536,11 @@ Below, we show some common ways you can use tool calling.
         The model intelligently determines when parallel execution is appropriate based on the independence of the requested operations.
 
         <Tip>
-        Most models supporting tool calling enable parallel tool calls by default. Some (including [OpenAI](/oss/javascript/integrations/chat/openai) and [Anthropic](/oss/javascript/integrations/chat/anthropic)) allow you to disable this feature. To do this, set `parallel_tool_calls=False`:
-        ```python
-        model.bind_tools([get_weather], parallel_tool_calls=False)
-        ```
+        Most models supporting tool calling enable parallel tool calls by default.
+
+        [OpenAI](/oss/javascript/integrations/chat/openai) allows you to disable this feature. Pass `parallel_tool_calls: false` when invoking (this call option is OpenAI-specific in TypeScript; Anthropic does not accept it):
+        <ModelsParallelToolCallsJs />
+
         </Tip>
     </Accordion>
     <Accordion title="Streaming tool calls" icon="rss">
@@ -700,6 +705,7 @@ Models can be requested to provide their response in a format matching a given s
     - **Include raw**: Use [`includeRaw: true`](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/withStructuredOutput) to get both the parsed output and the raw [`AIMessage`](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage)
     - **Validation**: Zod and Standard Schema objects provide automatic validation, while JSON Schema requires manual validation
     - **Standard Schema**: Any schema library implementing the [Standard Schema](https://standardschema.dev/) spec is supported and validated at runtime
+    - **Refusals**: If the model refuses, structured output throws `ModelRefusalError`, unless you set `includeRaw: true`. See [Handle a model refusal](#handle-a-model-refusal) and [Structured output](/oss/javascript/langchain/structured-output#model-refusal).
 
     See your [provider's integration page](/oss/javascript/integrations/providers/overview) for supported methods and configuration options.
 </Note>
@@ -760,6 +766,42 @@ It can be useful to return the raw [`AIMessage`](https://reference.langchain.com
     ```
 
 </Accordion>
+
+
+
+### Handle a model refusal
+
+Providers report a refusal, such as a safety-policy refusal, as a successful response rather than an error. A plain model call returns the message with a [`refusal` content block](/oss/javascript/langchain/messages#content-block-reference). `withStructuredOutput` throws [`ModelRefusalError`](https://reference.langchain.com/javascript/langchain-core/errors/ModelRefusalError) from `@langchain/core/errors` instead of a parsing error. The error's `rawMessage` holds the refused response.
+
+```typescript
+import { ModelRefusalError } from "@langchain/core/errors";
+
+const modelWithStructure = model.withStructuredOutput(Movie);
+
+try {
+  await modelWithStructure.invoke("Provide details about the movie Inception");
+} catch (error) {
+  if (ModelRefusalError.isInstance(error)) {
+    console.log(error.message); // Model refused to produce the requested output (category='cyber'): ...
+    const refused = error.rawMessage;
+  }
+}
+```
+
+With `includeRaw: true`, `withStructuredOutput` does not throw. A refusal returns `parsed: null`, so check `raw` for the refusal block:
+
+```typescript
+const modelWithStructure = model.withStructuredOutput(Movie, { includeRaw: true });
+const response = await modelWithStructure.invoke("Provide details about the movie Inception");
+const refusal = response.raw.contentBlocks.find((block) => block.type === "refusal");
+```
+
+LangChain detects refusals from OpenAI, Anthropic, and Gemini (`@langchain/google`) models. For a blocked prompt, Gemini sends no message. In that case, `@langchain/google` throws an error instead of returning a refusal block, with or without `includeRaw`. `ModelRefusalError.isInstance` returns `true` for that error. For agents, `responseFormat` in `createAgent` throws `ModelRefusalError` when you add [`modelRefusalMiddleware`](/oss/javascript/langchain/middleware/built-in#model-refusal). See [Structured output](/oss/javascript/langchain/structured-output#model-refusal) and [Handle a refusal](/oss/javascript/langchain/middleware/built-in#handle-a-refusal).
+
+<Note>
+    Refusal handling requires `@langchain/core>=1.3.7`, `@langchain/openai>=1.8.3`, `@langchain/anthropic>=1.6.3`, and `@langchain/google>=0.2.14`.
+</Note>
+
 
 ---
 
@@ -957,17 +999,14 @@ You can configure a custom base URL for providers that implement the OpenAI Chat
 <Accordion title="Custom base URL" icon="link">
 
 
-    Many model providers offer OpenAI-compatible APIs (e.g., [Together AI](https://www.together.ai/), [vLLM](https://github.com/vllm-project/vllm)). You can use `initChatModel` with these providers by specifying the appropriate `base_url` parameter:
+    Many model providers offer OpenAI-compatible APIs (e.g., [Together AI](https://www.together.ai/), [vLLM](https://github.com/vllm-project/vllm)). You can use `initChatModel` with these providers by specifying the appropriate `baseUrl` parameter:
 
-    ```python
-    model = initChatModel(
-        "MODEL_NAME",
-        {
-            modelProvider: "openai",
-            baseUrl: "BASE_URL",
-            apiKey: "YOUR_API_KEY",
-        }
-    )
+    ```typescript
+    const model = await initChatModel("MODEL_NAME", {
+      modelProvider: "openai",
+      baseUrl: "BASE_URL",
+      apiKey: "YOUR_API_KEY",
+    });
     ```
 
 
@@ -987,7 +1026,7 @@ Certain models can be configured to return token-level log probabilities represe
 
 ```typescript
 const model = new ChatOpenAI({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     logprobs: true,
 });
 
@@ -1082,7 +1121,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import { createAgent, createMiddleware } from "langchain";
 
 const basicModel = new ChatOpenAI({ model: "gpt-5.4-mini" });
-const advancedModel = new ChatOpenAI({ model: "gpt-5.5" });
+const advancedModel = new ChatOpenAI({ model: "gpt-6.1-sol" });
 
 const dynamicModelSelection = createMiddleware({
   name: "DynamicModelSelection",

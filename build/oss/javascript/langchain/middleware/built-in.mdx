@@ -3,6 +3,10 @@ title: Prebuilt middleware
 description: Prebuilt middleware for common agent use cases
 ---
 
+import MiddlewareSubagentCompiledJs from '/snippets/javascript/code-samples/middleware-subagent-compiled-js.mdx';
+import MiddlewareSubagentCompiledPy from '/snippets/javascript/code-samples/middleware-subagent-compiled-py.mdx';
+import MiddlewareSubagentJs from '/snippets/javascript/code-samples/middleware-subagent-js.mdx';
+import MiddlewareSubagentPy from '/snippets/javascript/code-samples/middleware-subagent-py.mdx';
 import RubricConfigurePy from '/snippets/javascript/code-samples/rubric-configure-py.mdx';
 
 LangChain provides prebuilt middleware for common use cases. Each middleware is production-ready and configurable for your specific needs.
@@ -22,6 +26,7 @@ The following middleware work with any LLM provider:
 | [Tool retry](#tool-retry) | Automatically retry failed tool calls with exponential backoff. |
 | [Model retry](#model-retry) | Automatically retry failed model calls with exponential backoff. |
 | [Model fallback](#model-fallback) | Automatically fallback to alternative models when primary fails. |
+| [Model refusal](#model-refusal) | Throw an error when the model refuses, instead of treating the refusal as a final answer. |
 | [Summarization](#summarization) | Automatically summarize conversation history when approaching token limits. |
 | [Human-in-the-loop](#human-in-the-loop) | Pause execution for human approval of tool calls. |
 | [Model call limit](#model-call-limit) | Limit the number of model calls to prevent excessive costs. |
@@ -57,7 +62,7 @@ Automatically retry failed tool calls with configurable exponential backoff. Too
 import { createAgent, toolRetryMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [searchTool, databaseTool],
   middleware: [
     toolRetryMiddleware({
@@ -141,7 +146,7 @@ import { z } from "zod";
 
 // Basic usage with default settings (2 retries, exponential backoff)
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [searchTool, databaseTool],
   middleware: [toolRetryMiddleware()],
 });
@@ -284,7 +289,7 @@ Automatically retry failed model calls with configurable exponential backoff. Mo
 import { createAgent, modelRetryMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [searchTool, databaseTool],
   middleware: [
     modelRetryMiddleware({
@@ -346,7 +351,7 @@ import { createAgent, modelRetryMiddleware } from "langchain";
 
 // Basic usage with default settings (2 retries, exponential backoff)
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [searchTool],
   middleware: [modelRetryMiddleware()],
 });
@@ -430,7 +435,7 @@ Automatically fallback to alternative models when the primary model fails. Model
 import { createAgent, modelFallbackMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [],
   middleware: [
     modelFallbackMiddleware(
@@ -465,6 +470,137 @@ The middleware accepts a variable number of string arguments representing fallba
 
 </Accordion>
 
+
+
+### Model refusal
+
+<Note>
+    `modelRefusalMiddleware` requires `langchain>=1.6.4`.
+</Note>
+
+Throw [`ModelRefusalError`](https://reference.langchain.com/javascript/langchain-core/errors/ModelRefusalError) when the model refuses, instead of returning the refusal as the agent's final answer. Providers report a refusal, such as a safety-policy refusal, as a successful response. Without this middleware, the agent run ends as if it succeeded. Model refusal is useful for the following:
+
+- Failing a run clearly when the model refuses.
+- Retrying a refused request on another model with [Model fallback](#model-fallback).
+
+The middleware checks each model response for a [`refusal` content block](/oss/javascript/langchain/messages#content-block-reference), which OpenAI, Anthropic, and Gemini models produce. It also catches refusals that fail to parse under a structured `responseFormat`. It does not detect refusals the model writes as ordinary text.
+
+```typescript
+import {
+  createAgent,
+  modelFallbackMiddleware,
+  modelRefusalMiddleware,
+} from "langchain";
+
+const agent = createAgent({
+  model: "claude-sonnet-5-5",
+  tools: [],
+  middleware: [
+    modelFallbackMiddleware("openai:gpt-6.1-sol"),
+    modelRefusalMiddleware(),
+  ],
+});
+```
+
+List [`modelRefusalMiddleware`](https://reference.langchain.com/javascript/langchain/index/modelRefusalMiddleware) after [`modelFallbackMiddleware`](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) so the fallback catches the error and retries on the next model. `modelRetryMiddleware` does not retry refusals. With its default `onFailure: "continue"`, it returns the error as the final answer. List it after `modelRefusalMiddleware`, or set `onFailure: "error"`. When streaming, text the model sends before refusing can reach the client before the middleware throws.
+
+#### Handle a refusal
+
+Choose how your application responds when the model refuses:
+
+<AccordionGroup>
+
+<Accordion title="Catch the error and continue">
+
+Catch [`ModelRefusalError`](https://reference.langchain.com/javascript/langchain-core/errors/ModelRefusalError) where you invoke the agent. The refused reply is not saved to the thread, so the next message continues the conversation normally, on the same model or a different one:
+
+```typescript
+import { createAgent, modelRefusalMiddleware } from "langchain";
+import { ModelRefusalError } from "@langchain/core/errors";
+import { MemorySaver } from "@langchain/langgraph";
+
+const agent = createAgent({
+  model: "claude-sonnet-5-5",
+  tools: [],
+  middleware: [modelRefusalMiddleware()],
+  checkpointer: new MemorySaver(),
+});
+const config = { configurable: { thread_id: "1" } };
+
+try {
+  await agent.invoke({ messages: [{ role: "user", content: "..." }] }, config);
+} catch (error) {
+  if (!ModelRefusalError.isInstance(error)) throw error;
+  console.log(error.message); // Tell the user the request was refused
+}
+
+// The thread is still usable
+await agent.invoke(
+  { messages: [{ role: "user", content: "Try something else" }] },
+  config
+);
+```
+
+</Accordion>
+
+<Accordion title="Fall back to another model">
+
+List [`modelFallbackMiddleware`](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) before `modelRefusalMiddleware`, as in the example above. When the model refuses, the fallback middleware retries the request on the next model, which can be from the same provider or a different one. A fallback model can still refuse the same request. Combine this with one of the other options for when every model refuses.
+
+</Accordion>
+
+<Accordion title="Reply to the user after fallback">
+
+To reply to the user instead of failing the run when every model refuses, add a middleware before `modelFallbackMiddleware` that catches the error:
+
+```typescript
+import {
+  AIMessage,
+  createAgent,
+  createMiddleware,
+  modelFallbackMiddleware,
+  modelRefusalMiddleware,
+} from "langchain";
+import { ModelRefusalError } from "@langchain/core/errors";
+
+const replyOnRefusal = createMiddleware({
+  name: "replyOnRefusal",
+  wrapModelCall: async (request, handler) => {
+    try {
+      return await handler(request);
+    } catch (error) {
+      if (!ModelRefusalError.isInstance(error)) throw error;
+      // Every model refused: reply to the user instead of failing the run
+      return new AIMessage("I cannot help with that request.");
+    }
+  },
+});
+
+const agent = createAgent({
+  model: "claude-sonnet-5-5",
+  tools: [],
+  middleware: [
+    replyOnRefusal,
+    modelFallbackMiddleware("openai:gpt-6.1-sol"),
+    modelRefusalMiddleware(),
+  ],
+});
+```
+
+When `claude-sonnet-5-5` refuses, the request falls back to `gpt-6.1-sol`. If that model also refuses, `replyOnRefusal` returns the message.
+
+</Accordion>
+
+<Accordion title="Write custom handling">
+
+For other handling, such as recording the refusal in state or calling `interrupt()` to ask a human how to continue, skip `modelRefusalMiddleware` and check each response for a [`refusal` content block](/oss/javascript/langchain/messages#content-block-reference) in your own middleware. See [Custom middleware](/oss/javascript/langchain/middleware/custom).
+
+</Accordion>
+
+</AccordionGroup>
+
+
+
 ### Summarization
 
 Automatically summarize conversation history when approaching token limits, preserving recent messages while compressing older context. Summarization is useful for the following:
@@ -482,7 +618,7 @@ Automatically summarize conversation history when approaching token limits, pres
 import { createAgent, summarizationMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [weatherTool, calculatorTool],
   middleware: [
     summarizationMiddleware({
@@ -598,7 +734,7 @@ import { createAgent, summarizationMiddleware } from "langchain";
 
 // Single condition (AND logic): trigger if tokens >= 4000 AND messages >= 10
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [weatherTool, calculatorTool],
   middleware: [
     summarizationMiddleware({
@@ -611,7 +747,7 @@ const agent = createAgent({
 
 // Multiple conditions (OR logic): trigger if tokens >= 3000 OR messages >= 6
 const agent2 = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [weatherTool, calculatorTool],
   middleware: [
     summarizationMiddleware({
@@ -627,7 +763,7 @@ const agent2 = createAgent({
 
 // Using fractional limits
 const agent3 = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [weatherTool, calculatorTool],
   middleware: [
     summarizationMiddleware({
@@ -675,7 +811,7 @@ function sendEmailTool(recipient: string, subject: string, body: string): string
 }
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [readEmailTool, sendEmailTool],
   middleware: [
     humanInTheLoopMiddleware({
@@ -717,7 +853,7 @@ import { createAgent, modelCallLimitMiddleware } from "langchain";
 import { MemorySaver } from "@langchain/langgraph";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   checkpointer: new MemorySaver(), // Required for thread limiting
   tools: [],
   middleware: [
@@ -773,7 +909,7 @@ Control agent execution by limiting the number of tool calls, either globally ac
 import { createAgent, toolCallLimitMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [searchTool, databaseTool],
   middleware: [
     toolCallLimitMiddleware({ threadLimit: 20, runLimit: 10 }),
@@ -845,7 +981,7 @@ const databaseLimiter = toolCallLimitMiddleware({ toolName: "query_database", th
 const strictLimiter = toolCallLimitMiddleware({ toolName: "scrape_webpage", runLimit: 2, exitBehavior: "error" });
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [searchTool, databaseTool, scraperTool],
   middleware: [globalLimiter, searchLimiter, databaseLimiter, strictLimiter],
 });
@@ -869,7 +1005,7 @@ Detect and handle Personally Identifiable Information (PII) in conversations usi
 import { createAgent, piiMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [],
   middleware: [
     piiMiddleware("email", { strategy: "redact", applyToInput: true }),
@@ -897,7 +1033,7 @@ import { createAgent, piiMiddleware, type PIIMatch } from "langchain";
 
 // Method 1: Regex pattern string
 const agent1 = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [],
   middleware: [
     piiMiddleware("api_key", {
@@ -909,7 +1045,7 @@ const agent1 = createAgent({
 
 // Method 2: RegExp object
 const agent2 = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [],
   middleware: [
     piiMiddleware("phone_number", {
@@ -941,7 +1077,7 @@ function detectSSN(content: string): PIIMatch[] {
 }
 
 const agent3 = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [],
   middleware: [
     piiMiddleware("ssn", {
@@ -1043,7 +1179,7 @@ Equip agents with task planning and tracking capabilities for complex multi-step
 import { createAgent, todoListMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [readFile, writeFile, runTests],
   middleware: [todoListMiddleware()],
 });
@@ -1082,7 +1218,7 @@ This middleware uses structured output to ask an LLM which tools are most releva
 import { createAgent, llmToolSelectorMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [tool1, tool2, tool3, tool4, tool5, ...],
   middleware: [
     llmToolSelectorMiddleware({
@@ -1117,6 +1253,10 @@ const agent = createAgent({
 
 
 </Accordion>
+
+
+
+
 
 
 
@@ -1279,94 +1419,25 @@ The subagents middleware from [Deep Agents](/oss/javascript/deepagents/overview)
 
 
 
-```typescript
-import { tool } from "langchain";
-import { createAgent } from "langchain";
-import { createSubAgentMiddleware } from "deepagents";
-import { z } from "zod";
+<MiddlewareSubagentJs />
 
-const getWeather = tool(
-  async ({ city }: { city: string }) => {
-    return `The weather in ${city} is sunny.`;
-  },
-  {
-    name: "get_weather",
-    description: "Get the weather in a city.",
-    schema: z.object({
-      city: z.string(),
-    }),
-  },
-);
 
-const agent = createAgent({
-  model: "claude-sonnet-4-6",
-  middleware: [
-    createSubAgentMiddleware({
-      defaultModel: "claude-sonnet-4-6",
-      defaultTools: [],
-      subagents: [
-        {
-          name: "weather",
-          description: "This subagent can get weather in cities.",
-          systemPrompt: "Use the get_weather tool to get the weather in a city.",
-          tools: [getWeather],
-          model: "gpt-5.5",
-          middleware: [],
-        },
-      ],
-    }),
-  ],
-});
-```
 
 
 A subagent is defined with a **name**, **description**, **system prompt**, and **tools**. You can also provide a subagent with a custom **model**, or with additional **middleware**. This can be particularly useful when you want to give the subagent an additional state key to share with the main agent.
+
 
 For more complex use cases, you can also provide your own prebuilt LangGraph graph as a subagent.
 
 
 
-```typescript
-import { tool, createAgent } from "langchain";
-import { createSubAgentMiddleware, type SubAgent } from "deepagents";
-import { z } from "zod";
+<MiddlewareSubagentCompiledJs />
 
-const getWeather = tool(
-  async ({ city }: { city: string }) => {
-    return `The weather in ${city} is sunny.`;
-  },
-  {
-    name: "get_weather",
-    description: "Get the weather in a city.",
-    schema: z.object({
-      city: z.string(),
-    }),
-  },
-);
 
-const weatherSubagent: SubAgent = {
-  name: "weather",
-  description: "This subagent can get weather in cities.",
-  systemPrompt: "Use the get_weather tool to get the weather in a city.",
-  tools: [getWeather],
-  model: "gpt-5.5",
-  middleware: [],
-};
-
-const agent = createAgent({
-  model: "claude-sonnet-4-6",
-  middleware: [
-    createSubAgentMiddleware({
-      defaultModel: "claude-sonnet-4-6",
-      defaultTools: [],
-      subagents: [weatherSubagent],
-    }),
-  ],
-});
-```
 
 
 In addition to any user-defined subagents, the main agent has access to a `general-purpose` subagent at all times. This subagent has the same instructions as the main agent and all the tools it has access to. The primary purpose of the `general-purpose` subagent is context isolation—the main agent can delegate a complex task to this subagent and get a concise answer back without bloat from intermediate tool calls.
+
 
 
 
@@ -1386,7 +1457,7 @@ Manage conversation context by clearing older tool call outputs when token limit
 import { createAgent, contextEditingMiddleware, ClearToolUsesEdit } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [],
   middleware: [
     contextEditingMiddleware({
@@ -1455,7 +1526,7 @@ The middleware applies context editing strategies when token limits are reached.
 import { createAgent, contextEditingMiddleware, ClearToolUsesEdit } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [searchTool, calculatorTool, databaseTool],
   middleware: [
     contextEditingMiddleware({
@@ -1490,7 +1561,7 @@ Emulate tool execution using an LLM for testing purposes, replacing actual tool 
 import { createAgent, toolEmulatorMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [getWeather, searchDatabase, sendEmail],
   middleware: [
     toolEmulatorMiddleware(), // Emulate all tools
@@ -1508,7 +1579,7 @@ const agent = createAgent({
 </ParamField>
 
 <ParamField body="model" type="string | BaseChatModel">
-    Model to use for generating emulated tool responses. Can be a model identifier string (e.g., `'google:gemini-3.6-flash'`) or a `BaseChatModel` instance. Defaults to the agent's model if not specified.
+    Model to use for generating emulated tool responses. Can be a model identifier string (e.g., `'google:gemini-4-hydrogen'`) or a `BaseChatModel` instance. Defaults to the agent's model if not specified.
 </ParamField>
 
 
@@ -1548,14 +1619,14 @@ const sendEmail = tool(
 
 // Emulate all tools (default behavior)
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [getWeather, sendEmail],
   middleware: [toolEmulatorMiddleware()],
 });
 
 // Emulate specific tools by name
 const agent2 = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [getWeather, sendEmail],
   middleware: [
     toolEmulatorMiddleware({
@@ -1566,7 +1637,7 @@ const agent2 = createAgent({
 
 // Emulate specific tools by passing tool instances
 const agent3 = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [getWeather, sendEmail],
   middleware: [
     toolEmulatorMiddleware({
@@ -1577,7 +1648,7 @@ const agent3 = createAgent({
 
 // Use custom model for emulation
 const agent5 = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [getWeather, sendEmail],
   middleware: [
     toolEmulatorMiddleware({

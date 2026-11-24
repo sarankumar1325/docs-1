@@ -65,7 +65,7 @@ The job of a harness: get the model the right context at the right time for the 
 Building on that, you can configure the basics directly with the `model=`, `tools=`, and `system_prompt=` parameters. For more advanced capabilities, extend the harness with [middleware](#configure-the-harness).
 
 <Tip>
-[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) builds on `create_agent` and comes with commonly useful capabilities already assembled, such as planning, file system tools, subagents, and memory. For maximum flexibility while using the same Deep Agents harness, use [Deep Agents](/oss/javascript/deepagents/overview) and host agents yourself, or run a custom [LangSmith Deployment](/langsmith/deployment). Use `create_agent` when you need to configure a smaller harness yourself.
+[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) builds on `create_agent` and comes with commonly useful capabilities already assembled, such as planning, file system tools, subagents, and memory. For maximum flexibility while using the same Deep Agents harness, use [Deep Agents](/oss/javascript/deepagents/overview) and host agents yourself, or run a custom [Agent Server](/langsmith/agent-server). Use `create_agent` when you need to configure a smaller harness yourself.
 </Tip>
 
 ## Core components
@@ -142,7 +142,7 @@ Trace each step of this loop, debug tool calls, and evaluate agent outputs with 
 
 
 
-You can invoke an agent with a message. Behind the scenes that passes an update to the agent's [`State`](/oss/javascript/langgraph/graph-api#state). All agents include a [sequence of messages](/oss/javascript/langgraph/use-graph-api#messagesvalue) in their state; to invoke the agent, pass a new message along with a `thread_id` so the agent can persist and resume conversation history:
+You can invoke an agent with a message. Behind the scenes that passes an update to the agent's [`State`](/oss/javascript/langgraph/graph-api#state). All agents include a [sequence of messages](/oss/javascript/langgraph/graph-api-state#messagesvalue) in their state; to invoke the agent, pass a new message along with a `thread_id` so the agent can persist and resume conversation history:
 
 
 
@@ -151,7 +151,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
 
 
 <Note>
-Persisting conversation history with `thread_id` requires the agent to be configured with a [checkpointer](/oss/javascript/langchain/long-term-memory). When deployed on [LangSmith](/langsmith/deployment), a checkpointer is provisioned automatically. Locally, pass one explicitly, for example `create_agent(..., checkpointer=InMemorySaver())`.
+Persisting conversation history with `thread_id` requires the agent to be configured with a [checkpointer](/oss/javascript/langchain/long-term-memory). When deployed on [LangSmith Agent Server](/langsmith/agent-server#persistence), a checkpointer is provisioned automatically. Locally, pass one explicitly, for example `create_agent(..., checkpointer=InMemorySaver())`.
 </Note>
 
 
@@ -328,6 +328,8 @@ Agents in production encounter failures that rarely appear in development: rate 
 
 
 See [`modelRetryMiddleware`](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware), [`toolRetryMiddleware`](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware), [Prebuilt middleware](/oss/javascript/langchain/middleware/built-in).
+
+
 
 
 ### Guardrails

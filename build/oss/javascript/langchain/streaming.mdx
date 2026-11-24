@@ -9,10 +9,6 @@ import StreamingAgentProgressPy from '/snippets/javascript/code-samples/streamin
 import StreamingReasoningTokensPy from '/snippets/javascript/code-samples/streaming-reasoning-tokens-py.mdx';
 import StreamingReasoningTokensJs from '/snippets/javascript/code-samples/streaming-reasoning-tokens-js.mdx';
 
-<Tip>
-For new applications, we recommend [event streaming](/oss/javascript/langchain/event-streaming)—the typed-projection API introduced in LangChain v1.3. Event streaming gives you separate iterators per projection (messages, values, tool calls, subgraphs) so you can consume them independently instead of branching on `stream_mode` chunks.
-</Tip>
-
 LangChain implements a streaming system to surface real-time updates.
 
 Streaming is crucial for enhancing the responsiveness of applications built on LLMs. By displaying output progressively, even before a complete response is ready, streaming significantly improves user experience (UX), particularly when dealing with the latency of LLMs.
@@ -64,7 +60,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
 <StreamingAgentProgressJs />
 
 <Note>
-Persisting conversation history with `thread_id` requires the agent to be configured with a [checkpointer](/oss/javascript/langchain/long-term-memory). On [LangSmith deployments](/langsmith/deployment) a checkpointer is provisioned automatically. Locally, pass one explicitly, for example `createAgent({ ..., checkpointer: new MemorySaver() })`. The remaining snippets on this page omit `thread_id` for brevity, but you should pass it in production.
+Persisting conversation history with `thread_id` requires the agent to be configured with a [checkpointer](/oss/javascript/langchain/long-term-memory). On [LangSmith Agent Server](/langsmith/agent-server#persistence), a checkpointer is provisioned automatically. Locally, pass one explicitly, for example `createAgent({ ..., checkpointer: new MemorySaver() })`. The remaining snippets on this page omit `thread_id` for brevity, but you should pass it in production.
 </Note>
 
 
@@ -261,7 +257,7 @@ Set `streaming: false` when initializing the model.
 import { ChatOpenAI } from "@langchain/openai";
 
 const model = new ChatOpenAI({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   streaming: false,  // [!code highlight]
 });
 ```

@@ -67,6 +67,10 @@
       "vscode"
     ]
   },
+  "banner": {
+    "content": "Would you notice if your agent got worse in production? [Tell us in our annual survey](https://form.typeform.com/to/U2EAO1Lz) for the chance to win LangChain swag.",
+    "dismissible": true
+  },
   "integrations": {
     "gtm": {
       "tagId": "GTM-MBBX68ST"
@@ -156,14 +160,74 @@
   "navigation": {
     "products": [
       {
-        "product": "AGENT DEVELOPMENT LIFECYCLE",
+        "product": "AGENT RUNTIME",
         "menu": [
           {
-            "item": "Home",
-            "icon": "home",
-            "description": "Get started",
-            "pages": [
-              "index"
+            "item": "No-code agents",
+            "icon": "wand",
+            "description": "Build agents without code",
+            "tabs": [
+              {
+                "tab": "Studio",
+                "pages": [
+                  "langsmith/build-an-agent"
+                ]
+              },
+              {
+                "tab": "Fleet",
+                "pages": [
+                  "langsmith/fleet/index",
+                  {
+                    "group": "Get started",
+                    "pages": [
+                      "langsmith/fleet/quickstart",
+                      "langsmith/fleet/essentials",
+                      "langsmith/fleet/templates",
+                      "langsmith/fleet/comparison"
+                    ]
+                  },
+                  {
+                    "group": "Configure",
+                    "pages": [
+                      "langsmith/fleet/workspace-admin",
+                      "langsmith/fleet/agent-identity",
+                      "langsmith/fleet/manage-agent-settings",
+                      "langsmith/fleet/computer-use"
+                    ]
+                  },
+                  {
+                    "group": "Tools and automation",
+                    "pages": [
+                      "langsmith/fleet/tools",
+                      "langsmith/fleet/channels",
+                      "langsmith/fleet/schedules",
+                      "langsmith/fleet/skills",
+                      "langsmith/fleet/slack-app",
+                      "langsmith/fleet/teams-app",
+                      "langsmith/fleet/remote-mcp-servers",
+                      "langsmith/fleet/arcade",
+                      "langsmith/fleet/salesforce"
+                    ]
+                  },
+                  {
+                    "group": "Advanced",
+                    "pages": [
+                      "langsmith/fleet/code",
+                      "langsmith/fleet/mcp-framework",
+                      "langsmith/fleet/webhooks",
+                      "langsmith/fleet/auth-format"
+                    ]
+                  },
+                  {
+                    "group": "Additional resources",
+                    "pages": [
+                      "langsmith/fleet/access-and-oversight",
+                      "langsmith/fleet/self-hosted-link",
+                      "langsmith/fleet/changelog"
+                    ]
+                  }
+                ]
+              }
             ]
           },
           {
@@ -229,16 +293,33 @@
                         ]
                       },
                       {
+                        "group": "Patterns",
+                        "pages": [
+                          "langsmith/python/managed-deep-agents-patterns",
+                          "langsmith/python/managed-deep-agents-tutorial",
+                          "langsmith/python/managed-deep-agents-watch-mode",
+                          "langsmith/python/managed-deep-agents-goal-oriented",
+                          "langsmith/python/managed-deep-agents-dreaming",
+                          "langsmith/python/managed-deep-agents-swarm"
+                        ]
+                      },
+                      {
                         "group": "Build and deploy",
                         "pages": [
                           "langsmith/python/managed-deep-agents-local-development",
-                          "langsmith/python/managed-deep-agents-tutorial",
                           "langsmith/python/managed-deep-agents-deploy",
                           "langsmith/python/managed-deep-agents-mcp-endpoint",
                           "langsmith/python/managed-deep-agents-custom-frontend",
                           "langsmith/python/managed-deep-agents-context-hub",
                           "langsmith/python/managed-deep-agents-cli",
                           "langsmith/python/managed-deep-agents-changelog"
+                        ]
+                      },
+                      {
+                        "group": "Templates",
+                        "pages": [
+                          "langsmith/python/managed-deep-agents-design-agent",
+                          "langsmith/python/managed-deep-agents-paid-media-agent"
                         ]
                       }
                     ]
@@ -281,8 +362,8 @@
                           "oss/python/deepagents/sandboxes",
                           "oss/python/deepagents/browser-use",
                           "oss/python/deepagents/interpreters",
-                          "oss/python/deepagents/event-streaming",
-                          "oss/python/deepagents/streaming"
+                          "oss/python/deepagents/streaming",
+                          "oss/python/deepagents/event-streaming"
                         ]
                       },
                       {
@@ -369,8 +450,8 @@
                           "oss/python/langchain/messages",
                           "oss/python/langchain/tools",
                           "oss/python/langchain/short-term-memory",
-                          "oss/python/langchain/event-streaming",
                           "oss/python/langchain/streaming",
+                          "oss/python/langchain/event-streaming",
                           "oss/python/langchain/structured-output"
                         ]
                       },
@@ -485,12 +566,8 @@
                       {
                         "group": "Get started",
                         "pages": [
-                          "oss/python/langgraph/install",
                           "oss/python/langgraph/quickstart",
-                          "oss/python/langgraph/local-server",
-                          "oss/python/langgraph/changelog-py",
-                          "oss/python/langgraph/thinking-in-langgraph",
-                          "oss/python/langgraph/workflows-agents"
+                          "oss/python/langgraph/changelog-py"
                         ]
                       },
                       {
@@ -500,8 +577,8 @@
                           "oss/python/langgraph/checkpointers",
                           "oss/python/langgraph/stores",
                           "oss/python/langgraph/fault-tolerance",
-                          "oss/python/langgraph/event-streaming",
                           "oss/python/langgraph/streaming",
+                          "oss/python/langgraph/event-streaming",
                           "oss/python/langgraph/interrupts",
                           "oss/python/langgraph/use-time-travel",
                           "oss/python/langgraph/add-memory",
@@ -509,8 +586,28 @@
                         ]
                       },
                       {
-                        "group": "Production",
+                        "group": "Patterns",
                         "pages": [
+                          "oss/python/langgraph/workflows-agents"
+                        ]
+                      },
+                      {
+                        "group": "Build with the Graph API",
+                        "pages": [
+                          "oss/python/langgraph/thinking-in-graph-api",
+                          "oss/python/langgraph/use-graph-api",
+                          "oss/python/langgraph/graph-api",
+                          "oss/python/langgraph/graph-api-state",
+                          "oss/python/langgraph/graph-api-control-flow",
+                          "oss/python/langgraph/graph-api-send-command",
+                          "oss/python/langgraph/graph-api-nodes",
+                          "oss/python/langgraph/graph-api-visualize"
+                        ]
+                      },
+                      {
+                        "group": "Deployment",
+                        "pages": [
+                          "oss/python/langgraph/local-server",
                           "oss/python/langgraph/application-structure",
                           "oss/python/langgraph/test",
                           "oss/python/langgraph/backward-compatibility",
@@ -529,23 +626,9 @@
                         ]
                       },
                       {
-                        "group": "LangGraph APIs",
+                        "group": "Advanced",
                         "pages": [
-                          {
-                            "group": "Graph API",
-                            "pages": [
-                              "oss/python/langgraph/choosing-apis",
-                              "oss/python/langgraph/graph-api",
-                              "oss/python/langgraph/use-graph-api"
-                            ]
-                          },
-                          {
-                            "group": "Functional API",
-                            "pages": [
-                              "oss/python/langgraph/functional-api",
-                              "oss/python/langgraph/use-functional-api"
-                            ]
-                          },
+                          "oss/python/langgraph/functional-api",
                           "oss/python/langgraph/pregel"
                         ]
                       },
@@ -640,6 +723,8 @@
                             "pages": [
                               "oss/python/langchain/deep-agent-from-scratch",
                               "oss/python/langchain/knowledge-base",
+                              "oss/python/langchain/chunking",
+                              "oss/python/langchain/retrieval-optimization",
                               "oss/python/langchain/sql-agent",
                               "oss/python/langchain/voice-agent"
                             ]
@@ -823,16 +908,33 @@
                         ]
                       },
                       {
+                        "group": "Patterns",
+                        "pages": [
+                          "langsmith/javascript/managed-deep-agents-patterns",
+                          "langsmith/javascript/managed-deep-agents-tutorial",
+                          "langsmith/javascript/managed-deep-agents-watch-mode",
+                          "langsmith/javascript/managed-deep-agents-goal-oriented",
+                          "langsmith/javascript/managed-deep-agents-dreaming",
+                          "langsmith/javascript/managed-deep-agents-swarm"
+                        ]
+                      },
+                      {
                         "group": "Build and deploy",
                         "pages": [
                           "langsmith/javascript/managed-deep-agents-local-development",
-                          "langsmith/javascript/managed-deep-agents-tutorial",
                           "langsmith/javascript/managed-deep-agents-deploy",
                           "langsmith/javascript/managed-deep-agents-mcp-endpoint",
                           "langsmith/javascript/managed-deep-agents-custom-frontend",
                           "langsmith/javascript/managed-deep-agents-context-hub",
                           "langsmith/javascript/managed-deep-agents-cli",
                           "langsmith/javascript/managed-deep-agents-changelog"
+                        ]
+                      },
+                      {
+                        "group": "Templates",
+                        "pages": [
+                          "langsmith/javascript/managed-deep-agents-design-agent",
+                          "langsmith/javascript/managed-deep-agents-paid-media-agent"
                         ]
                       }
                     ]
@@ -875,8 +977,8 @@
                           "oss/javascript/deepagents/sandboxes",
                           "oss/javascript/deepagents/browser-use",
                           "oss/javascript/deepagents/interpreters",
-                          "oss/javascript/deepagents/event-streaming",
-                          "oss/javascript/deepagents/streaming"
+                          "oss/javascript/deepagents/streaming",
+                          "oss/javascript/deepagents/event-streaming"
                         ]
                       },
                       {
@@ -962,8 +1064,8 @@
                           "oss/javascript/langchain/messages",
                           "oss/javascript/langchain/tools",
                           "oss/javascript/langchain/short-term-memory",
-                          "oss/javascript/langchain/event-streaming",
                           "oss/javascript/langchain/streaming",
+                          "oss/javascript/langchain/event-streaming",
                           "oss/javascript/langchain/structured-output"
                         ]
                       },
@@ -1078,12 +1180,8 @@
                       {
                         "group": "Get started",
                         "pages": [
-                          "oss/javascript/langgraph/install",
                           "oss/javascript/langgraph/quickstart",
-                          "oss/javascript/langgraph/local-server",
-                          "oss/javascript/langgraph/changelog-js",
-                          "oss/javascript/langgraph/thinking-in-langgraph",
-                          "oss/javascript/langgraph/workflows-agents"
+                          "oss/javascript/langgraph/changelog-js"
                         ]
                       },
                       {
@@ -1093,8 +1191,8 @@
                           "oss/javascript/langgraph/fault-tolerance",
                           "oss/javascript/langgraph/checkpointers",
                           "oss/javascript/langgraph/stores",
-                          "oss/javascript/langgraph/event-streaming",
                           "oss/javascript/langgraph/streaming",
+                          "oss/javascript/langgraph/event-streaming",
                           "oss/javascript/langgraph/interrupts",
                           "oss/javascript/langgraph/use-time-travel",
                           "oss/javascript/langgraph/add-memory",
@@ -1102,8 +1200,28 @@
                         ]
                       },
                       {
-                        "group": "Production",
+                        "group": "Patterns",
                         "pages": [
+                          "oss/javascript/langgraph/workflows-agents"
+                        ]
+                      },
+                      {
+                        "group": "Build with the Graph API",
+                        "pages": [
+                          "oss/javascript/langgraph/thinking-in-graph-api",
+                          "oss/javascript/langgraph/use-graph-api",
+                          "oss/javascript/langgraph/graph-api",
+                          "oss/javascript/langgraph/graph-api-state",
+                          "oss/javascript/langgraph/graph-api-control-flow",
+                          "oss/javascript/langgraph/graph-api-send-command",
+                          "oss/javascript/langgraph/graph-api-nodes",
+                          "oss/javascript/langgraph/graph-api-visualize"
+                        ]
+                      },
+                      {
+                        "group": "Deployment",
+                        "pages": [
+                          "oss/javascript/langgraph/local-server",
                           "oss/javascript/langgraph/application-structure",
                           "oss/javascript/langgraph/test",
                           "oss/javascript/langgraph/backward-compatibility",
@@ -1122,23 +1240,9 @@
                         ]
                       },
                       {
-                        "group": "LangGraph APIs",
+                        "group": "Advanced",
                         "pages": [
-                          {
-                            "group": "Graph API",
-                            "pages": [
-                              "oss/javascript/langgraph/choosing-apis",
-                              "oss/javascript/langgraph/graph-api",
-                              "oss/javascript/langgraph/use-graph-api"
-                            ]
-                          },
-                          {
-                            "group": "Functional API",
-                            "pages": [
-                              "oss/javascript/langgraph/functional-api",
-                              "oss/javascript/langgraph/use-functional-api"
-                            ]
-                          },
+                          "oss/javascript/langgraph/functional-api",
                           "oss/javascript/langgraph/pregel"
                         ]
                       },
@@ -1199,6 +1303,7 @@
                               "oss/javascript/integrations/providers/google",
                               "oss/javascript/integrations/chat/google",
                               "oss/javascript/integrations/tools/google",
+                              "oss/javascript/integrations/decision_models/google_generative_ai",
                               "oss/javascript/integrations/chat/google_generative_ai",
                               "oss/javascript/integrations/chat/google_vertex_ai"
                             ]
@@ -1231,6 +1336,7 @@
                           "oss/javascript/integrations/middleware/index",
                           "oss/javascript/integrations/sandboxes/index",
                           "oss/javascript/integrations/backends/index",
+                          "oss/javascript/integrations/checkpointers/index",
                           "oss/javascript/integrations/stores/index",
                           "oss/javascript/integrations/long-term-memory/index",
                           "oss/javascript/integrations/document_transformers/index",
@@ -1274,6 +1380,8 @@
                             "pages": [
                               "oss/javascript/langchain/deep-agent-from-scratch",
                               "oss/javascript/langchain/knowledge-base",
+                              "oss/javascript/langchain/chunking",
+                              "oss/javascript/langchain/retrieval-optimization",
                               "oss/javascript/langchain/sql-agent",
                               "oss/javascript/langchain/voice-agent"
                             ]
@@ -1406,6 +1514,353 @@
               }
             ]
           },
+          {
+            "item": "Deploy",
+            "icon": "rocket",
+            "description": "Ship agents to production",
+            "tabs": [
+              {
+                "tab": "Get started",
+                "pages": [
+                  "langsmith/deploy-overview",
+                  "langsmith/deployment-quickstart",
+                  {
+                    "group": "Deployment components",
+                    "pages": [
+                      "langsmith/components",
+                      "langsmith/data-plane",
+                      "langsmith/control-plane"
+                    ]
+                  },
+                  {
+                    "group": "Develop & test",
+                    "pages": [
+                      "langsmith/local-dev-testing",
+                      "langsmith/studio-deploy"
+                    ]
+                  },
+                  {
+                    "group": "Frameworks and platforms",
+                    "pages": [
+                      "langsmith/deploy-google-adk",
+                      "langsmith/deploy-other-frameworks",
+                      {
+                        "group": "Full-stack web apps",
+                        "pages": [
+                          "langsmith/deploy-frameworks-and-platforms",
+                          "langsmith/deploy-vite-langsmith",
+                          "langsmith/deploy-nextjs",
+                          "langsmith/deploy-sveltekit",
+                          "langsmith/deploy-nuxt",
+                          "langsmith/deploy-cloudflare-workers",
+                          "langsmith/deploy-deno"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "group": "Reference",
+                    "pages": [
+                      "langsmith/deploy-reference-overview",
+                      "langsmith/smith-deployments-sdk",
+                      "langsmith/cli",
+                      "langsmith/remote-graph",
+                      {
+                        "group": "Agent Server API",
+                        "boost": 0.3,
+                        "pages": [
+                          "langsmith/server-api-ref"
+                        ],
+                        "openapi": {
+                          "source": "langsmith/agent-server-openapi.json",
+                          "directory": "langsmith/agent-server-api"
+                        }
+                      },
+                      {
+                        "group": "Control Plane API",
+                        "boost": 0.3,
+                        "pages": [
+                          "langsmith/api-ref-control-plane"
+                        ],
+                        "openapi": {
+                          "source": "https://api.host.langchain.com/openapi.json"
+                        }
+                      },
+                      "langsmith/agent-server-changelog",
+                      {
+                        "group": "Related",
+                        "pages": [
+                          "langsmith/langgraph-python-sdk",
+                          "langsmith/langgraph-js-ts-sdk"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "tab": "Agent Server",
+                "pages": [
+                  "langsmith/agent-server",
+                  {
+                    "group": "Develop your application",
+                    "pages": [
+                      "langsmith/application-structure",
+                      {
+                        "group": "Set up dependencies",
+                        "pages": [
+                          "langsmith/setup-app-requirements-txt",
+                          "langsmith/setup-pyproject",
+                          "langsmith/setup-javascript",
+                          "langsmith/custom-docker",
+                          "langsmith/monorepo-support"
+                        ]
+                      },
+                      {
+                        "group": "Persistence",
+                        "pages": [
+                          "langsmith/configure-checkpointer",
+                          "langsmith/configure-ttl",
+                          "langsmith/semantic-search"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "group": "Capabilities",
+                    "pages": [
+                      {
+                        "group": "Assistants",
+                        "pages": [
+                          "langsmith/assistants",
+                          "langsmith/configuration-cloud"
+                        ]
+                      },
+                      "langsmith/use-threads",
+                      {
+                        "group": "Runs",
+                        "pages": [
+                          "langsmith/runs",
+                          "langsmith/background-run",
+                          "langsmith/same-thread",
+                          "langsmith/stateless-runs",
+                          "langsmith/cancel-run",
+                          "langsmith/run-priority"
+                        ]
+                      },
+                      "langsmith/use-remote-graph",
+                      "langsmith/cron-jobs",
+                      "langsmith/streaming",
+                      "langsmith/add-human-in-the-loop",
+                      "langsmith/human-in-the-loop-time-travel",
+                      {
+                        "group": "Double-texting",
+                        "pages": [
+                          "langsmith/double-texting",
+                          "langsmith/interrupt-concurrent",
+                          "langsmith/rollback-concurrent",
+                          "langsmith/reject-concurrent",
+                          "langsmith/enqueue-concurrent"
+                        ]
+                      },
+                      "langsmith/use-webhooks",
+                      "langsmith/agent-server-distributed-tracing",
+                      "langsmith/server-mcp",
+                      "langsmith/server-mcp-elicitation",
+                      "langsmith/server-a2a",
+                      "langsmith/agent-server-changelog-link"
+                    ]
+                  },
+                  {
+                    "group": "How to build",
+                    "pages": [
+                      "langsmith/agent-server-feedback",
+                      "langsmith/generative-ui-react",
+                      "langsmith/cicd-pipeline-example"
+                    ]
+                  },
+                  {
+                    "group": "Auth & access control",
+                    "pages": [
+                      "langsmith/auth",
+                      "langsmith/custom-auth",
+                      {
+                        "group": "Custom auth tutorial",
+                        "icon": "school",
+                        "pages": [
+                          "langsmith/set-up-custom-auth",
+                          "langsmith/resource-auth",
+                          "langsmith/store-auth",
+                          "langsmith/add-auth-server"
+                        ]
+                      },
+                      "langsmith/openapi-security",
+                      "langsmith/agent-auth"
+                    ]
+                  },
+                  {
+                    "group": "Server customization",
+                    "pages": [
+                      "langsmith/caching",
+                      "langsmith/configure-iam-auth",
+                      {
+                        "group": "Encryption at rest",
+                        "root": "langsmith/encryption",
+                        "pages": [
+                          "langsmith/aes-encryption",
+                          "langsmith/custom-encryption"
+                        ]
+                      },
+                      "langsmith/graph-rebuild",
+                      {
+                        "group": "Replace built-in backends",
+                        "pages": [
+                          "langsmith/custom-store",
+                          "langsmith/custom-checkpointer"
+                        ]
+                      },
+                      {
+                        "group": "Extend the HTTP server",
+                        "pages": [
+                          "langsmith/custom-routes",
+                          "langsmith/custom-middleware",
+                          "langsmith/custom-lifespan"
+                        ]
+                      },
+                      {
+                        "group": "Headers and logging",
+                        "pages": [
+                          "langsmith/configurable-headers",
+                          "langsmith/configurable-logs"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "tab": "Deploy to Cloud",
+                "pages": [
+                  "langsmith/deploy-to-cloud-overview",
+                  "langsmith/cloud-platform-features",
+                  {
+                    "group": "Deployment guide",
+                    "pages": [
+                      "langsmith/deploy-to-cloud",
+                      "langsmith/agent-server-revisions",
+                      "langsmith/monitor-agent-server",
+                      "langsmith/preview-builds",
+                      "langsmith/manage-agent-server"
+                    ]
+                  },
+                  {
+                    "group": "Reference",
+                    "pages": [
+                      "langsmith/env-var-cloud"
+                    ]
+                  }
+                ]
+              },
+              {
+                "tab": "Deploy to Self-hosted",
+                "pages": [
+                  "langsmith/deploy-to-self-hosted-overview",
+                  "langsmith/deploy-with-control-plane",
+                  "langsmith/hybrid",
+                  "langsmith/deploy-standalone-server",
+                  {
+                    "group": "Configure",
+                    "pages": [
+                      "langsmith/self-hosted-platform-features",
+                      "langsmith/self-hosted-agent-server-metrics",
+                      "langsmith/agent-server-scale",
+                      "langsmith/self-host-restricted-network-build",
+                      "langsmith/diagnostics-self-hosted"
+                    ]
+                  },
+                  {
+                    "group": "Reference",
+                    "pages": [
+                      "langsmith/env-var-self-hosted"
+                    ]
+                  }
+                ]
+              },
+              {
+                "tab": "Prompt & Context Hub",
+                "pages": [
+                  "langsmith/prompt-context-hub",
+                  {
+                    "group": "Prompts",
+                    "pages": [
+                      "langsmith/prompt-engineering-quickstart",
+                      "langsmith/prompt-engineering-concepts",
+                      "langsmith/chat-prompt-engineering",
+                      "langsmith/playground-model-providers",
+                      {
+                        "group": "Create and manage prompts",
+                        "pages": [
+                          "langsmith/create-a-prompt",
+                          "langsmith/manage-prompts",
+                          "langsmith/manage-prompts-programmatically",
+                          "langsmith/managing-model-configurations",
+                          "langsmith/prompt-template-format",
+                          "langsmith/use-tools",
+                          "langsmith/multimodal-content"
+                        ]
+                      },
+                      "langsmith/write-prompt-with-ai",
+                      {
+                        "group": "Connect to models",
+                        "pages": [
+                          "langsmith/custom-openai-compliant-model",
+                          "langsmith/compatible-decision-model-provider",
+                          "langsmith/custom-endpoint"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "group": "Context Hub",
+                    "pages": [
+                      "langsmith/context-engineering-concepts",
+                      "langsmith/use-the-context-hub",
+                      "langsmith/manage-contexts-sdk",
+                      "langsmith/context-hub-webhooks"
+                    ]
+                  },
+                  {
+                    "group": "Tutorials",
+                    "pages": [
+                      "langsmith/optimize-classifier",
+                      "langsmith/prompt-commit",
+                      "langsmith/multiple-messages"
+                    ]
+                  }
+                ]
+              },
+              {
+                "tab": "Sandboxes",
+                "pages": [
+                  "langsmith/sandboxes",
+                  "langsmith/sandbox-snapshots",
+                  "langsmith/sandbox-service-urls",
+                  "langsmith/sandbox-download-links",
+                  "langsmith/sandbox-auth-proxy",
+                  "langsmith/sandbox-mounts",
+                  "langsmith/sandbox-permissions",
+                  "langsmith/sandbox-cli",
+                  "langsmith/sandbox-sdk",
+                  "langsmith/harbor-integrations"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "product": "AGENT IMPROVEMENT",
+        "menu": [
           {
             "item": "Test",
             "icon": "flask",
@@ -1543,6 +1998,7 @@
                           "langsmith/llm-as-judge",
                           "langsmith/decision-model-evaluator",
                           "langsmith/code-evaluator-ui",
+                          "langsmith/advanced-code-evaluators",
                           "langsmith/composite-evaluators-ui"
                         ]
                       },
@@ -1581,6 +2037,7 @@
                 "tab": "Annotation Queues",
                 "pages": [
                   "langsmith/annotation-queues",
+                  "langsmith/annotation-queue-custom-views",
                   "langsmith/annotation-queues-sdk",
                   "langsmith/assertions",
                   "langsmith/set-up-feedback-criteria",
@@ -1609,348 +2066,6 @@
                   "langsmith/use-studio",
                   "langsmith/observability-studio",
                   "langsmith/troubleshooting-studio"
-                ]
-              }
-            ]
-          },
-          {
-            "item": "Deploy",
-            "icon": "rocket",
-            "description": "Ship agents to production",
-            "tabs": [
-              {
-                "tab": "Get started",
-                "pages": [
-                  "langsmith/deployment",
-                  "langsmith/deployment-quickstart",
-                  {
-                    "group": "Deployment components",
-                    "pages": [
-                      "langsmith/components",
-                      "langsmith/data-plane",
-                      "langsmith/control-plane"
-                    ]
-                  },
-                  {
-                    "group": "Develop & test",
-                    "pages": [
-                      "langsmith/local-dev-testing",
-                      "langsmith/studio-deploy"
-                    ]
-                  },
-                  {
-                    "group": "Frameworks and platforms",
-                    "pages": [
-                      "langsmith/deploy-google-adk",
-                      "langsmith/deploy-other-frameworks",
-                      {
-                        "group": "Full-stack web apps",
-                        "pages": [
-                          "langsmith/deploy-frameworks-and-platforms",
-                          "langsmith/deploy-vite-langsmith",
-                          "langsmith/deploy-nextjs",
-                          "langsmith/deploy-sveltekit",
-                          "langsmith/deploy-nuxt",
-                          "langsmith/deploy-cloudflare-workers",
-                          "langsmith/deploy-deno"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "group": "Reference",
-                    "pages": [
-                      "langsmith/deploy-reference-overview",
-                      "langsmith/smith-deployments-sdk",
-                      "langsmith/cli",
-                      "langsmith/remote-graph",
-                      {
-                        "group": "Agent Server API",
-                        "boost": 0.3,
-                        "pages": [
-                          "langsmith/server-api-ref"
-                        ],
-                        "openapi": {
-                          "source": "langsmith/agent-server-openapi.json",
-                          "directory": "langsmith/agent-server-api"
-                        }
-                      },
-                      {
-                        "group": "Control Plane API",
-                        "boost": 0.3,
-                        "pages": [
-                          "langsmith/api-ref-control-plane"
-                        ],
-                        "openapi": {
-                          "source": "https://api.host.langchain.com/openapi.json"
-                        }
-                      },
-                      "langsmith/agent-server-changelog",
-                      {
-                        "group": "Related",
-                        "pages": [
-                          "langsmith/langgraph-python-sdk",
-                          "langsmith/langgraph-js-ts-sdk"
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "tab": "Agent Server",
-                "pages": [
-                  "langsmith/agent-server-overview",
-                  {
-                    "group": "Develop your application",
-                    "pages": [
-                      "langsmith/application-structure",
-                      {
-                        "group": "Set up dependencies",
-                        "pages": [
-                          "langsmith/setup-app-requirements-txt",
-                          "langsmith/setup-pyproject",
-                          "langsmith/setup-javascript",
-                          "langsmith/custom-docker",
-                          "langsmith/monorepo-support"
-                        ]
-                      },
-                      {
-                        "group": "Persistence",
-                        "pages": [
-                          "langsmith/configure-checkpointer",
-                          "langsmith/configure-ttl",
-                          "langsmith/semantic-search"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "group": "Capabilities",
-                    "pages": [
-                      "langsmith/agent-server",
-                      {
-                        "group": "Assistants",
-                        "pages": [
-                          "langsmith/assistants",
-                          "langsmith/configuration-cloud"
-                        ]
-                      },
-                      "langsmith/use-threads",
-                      {
-                        "group": "Runs",
-                        "pages": [
-                          "langsmith/runs",
-                          "langsmith/background-run",
-                          "langsmith/same-thread",
-                          "langsmith/stateless-runs",
-                          "langsmith/cancel-run"
-                        ]
-                      },
-                      "langsmith/use-remote-graph",
-                      "langsmith/cron-jobs",
-                      "langsmith/streaming",
-                      "langsmith/add-human-in-the-loop",
-                      "langsmith/human-in-the-loop-time-travel",
-                      {
-                        "group": "Double-texting",
-                        "pages": [
-                          "langsmith/double-texting",
-                          "langsmith/interrupt-concurrent",
-                          "langsmith/rollback-concurrent",
-                          "langsmith/reject-concurrent",
-                          "langsmith/enqueue-concurrent"
-                        ]
-                      },
-                      "langsmith/use-webhooks",
-                      "langsmith/agent-server-distributed-tracing",
-                      "langsmith/server-mcp",
-                      "langsmith/server-mcp-elicitation",
-                      "langsmith/server-a2a",
-                      "langsmith/agent-server-changelog-link"
-                    ]
-                  },
-                  {
-                    "group": "How to build",
-                    "pages": [
-                      "langsmith/agent-server-feedback",
-                      "langsmith/generative-ui-react",
-                      "langsmith/cicd-pipeline-example"
-                    ]
-                  },
-                  {
-                    "group": "Auth & access control",
-                    "pages": [
-                      "langsmith/auth",
-                      "langsmith/custom-auth",
-                      {
-                        "group": "Custom auth tutorial",
-                        "icon": "school",
-                        "pages": [
-                          "langsmith/set-up-custom-auth",
-                          "langsmith/resource-auth",
-                          "langsmith/store-auth",
-                          "langsmith/add-auth-server"
-                        ]
-                      },
-                      "langsmith/openapi-security",
-                      "langsmith/agent-auth"
-                    ]
-                  },
-                  {
-                    "group": "Server customization",
-                    "pages": [
-                      "langsmith/caching",
-                      "langsmith/configure-iam-auth",
-                      {
-                        "group": "Encryption at rest",
-                        "root": "langsmith/encryption",
-                        "pages": [
-                          "langsmith/aes-encryption",
-                          "langsmith/custom-encryption"
-                        ]
-                      },
-                      "langsmith/graph-rebuild",
-                      {
-                        "group": "Replace built-in backends",
-                        "pages": [
-                          "langsmith/custom-store",
-                          "langsmith/custom-checkpointer"
-                        ]
-                      },
-                      {
-                        "group": "Extend the HTTP server",
-                        "pages": [
-                          "langsmith/custom-routes",
-                          "langsmith/custom-middleware",
-                          "langsmith/custom-lifespan"
-                        ]
-                      },
-                      {
-                        "group": "Headers and logging",
-                        "pages": [
-                          "langsmith/configurable-headers",
-                          "langsmith/configurable-logs"
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "tab": "Deploy to Cloud",
-                "pages": [
-                  "langsmith/deploy-to-cloud-overview",
-                  "langsmith/cloud-platform-features",
-                  {
-                    "group": "Deployment guide",
-                    "pages": [
-                      "langsmith/deploy-to-cloud",
-                      "langsmith/deployment-revisions",
-                      "langsmith/monitor-deployment",
-                      "langsmith/preview-builds",
-                      "langsmith/manage-deployment"
-                    ]
-                  },
-                  {
-                    "group": "Reference",
-                    "pages": [
-                      "langsmith/env-var-cloud"
-                    ]
-                  }
-                ]
-              },
-              {
-                "tab": "Deploy to Self-hosted",
-                "pages": [
-                  "langsmith/deploy-to-self-hosted-overview",
-                  "langsmith/deploy-with-control-plane",
-                  "langsmith/hybrid",
-                  "langsmith/deploy-standalone-server",
-                  {
-                    "group": "Configure",
-                    "pages": [
-                      "langsmith/self-hosted-platform-features",
-                      "langsmith/self-hosted-agent-server-metrics",
-                      "langsmith/agent-server-scale",
-                      "langsmith/self-host-restricted-network-build",
-                      "langsmith/diagnostics-self-hosted"
-                    ]
-                  },
-                  {
-                    "group": "Reference",
-                    "pages": [
-                      "langsmith/env-var-self-hosted"
-                    ]
-                  }
-                ]
-              },
-              {
-                "tab": "Prompt & Context Hub",
-                "pages": [
-                  "langsmith/prompt-context-hub",
-                  {
-                    "group": "Prompts",
-                    "pages": [
-                      "langsmith/prompt-engineering-quickstart",
-                      "langsmith/prompt-engineering-concepts",
-                      "langsmith/chat-prompt-engineering",
-                      "langsmith/playground-model-providers",
-                      {
-                        "group": "Create and manage prompts",
-                        "pages": [
-                          "langsmith/create-a-prompt",
-                          "langsmith/manage-prompts",
-                          "langsmith/manage-prompts-programmatically",
-                          "langsmith/managing-model-configurations",
-                          "langsmith/prompt-template-format",
-                          "langsmith/use-tools",
-                          "langsmith/multimodal-content"
-                        ]
-                      },
-                      "langsmith/write-prompt-with-ai",
-                      {
-                        "group": "Connect to models",
-                        "pages": [
-                          "langsmith/custom-openai-compliant-model",
-                          "langsmith/compatible-decision-model-provider",
-                          "langsmith/custom-endpoint"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "group": "Context Hub",
-                    "pages": [
-                      "langsmith/context-engineering-concepts",
-                      "langsmith/use-the-context-hub",
-                      "langsmith/manage-contexts-sdk",
-                      "langsmith/context-hub-webhooks"
-                    ]
-                  },
-                  {
-                    "group": "Tutorials",
-                    "pages": [
-                      "langsmith/optimize-classifier",
-                      "langsmith/prompt-commit",
-                      "langsmith/multiple-messages"
-                    ]
-                  }
-                ]
-              },
-              {
-                "tab": "Sandboxes",
-                "pages": [
-                  "langsmith/sandboxes",
-                  "langsmith/sandbox-snapshots",
-                  "langsmith/sandbox-service-urls",
-                  "langsmith/sandbox-download-links",
-                  "langsmith/sandbox-auth-proxy",
-                  "langsmith/sandbox-mounts",
-                  "langsmith/sandbox-permissions",
-                  "langsmith/sandbox-cli",
-                  "langsmith/sandbox-sdk",
-                  "langsmith/harbor-integrations"
                 ]
               }
             ]
@@ -2126,6 +2241,7 @@
                     ]
                   },
                   "langsmith/threads",
+                  "langsmith/users",
                   {
                     "group": "Bulk export trace data",
                     "pages": [
@@ -2160,6 +2276,8 @@
                       "langsmith/dashboards",
                       "langsmith/alerts",
                       "langsmith/insights",
+                      "langsmith/insights-batch-reports",
+                      "langsmith/coding-agents",
                       "langsmith/custom-apps"
                     ]
                   },
@@ -2192,7 +2310,7 @@
                   "langsmith/smith-go-sdk",
                   "langsmith/smith-java-sdk",
                   {
-                    "group": "SmithDB SDK migration",
+                    "group": "SmithDB API migration",
                     "pages": [
                       "langsmith/smithdb-sdk-migration",
                       "langsmith/smithdb-sdk-migration-query-runs",
@@ -2217,11 +2335,34 @@
                 ]
               }
             ]
+          },
+          {
+            "item": "Engine",
+            "icon": "/images/brand/engine-icon-no-bg-dark.svg",
+            "description": "Find and fix agent issues",
+            "pages": [
+              "langsmith/engine",
+              "langsmith/engine-setup",
+              "langsmith/engine-issues",
+              "langsmith/engine-repositories",
+              "langsmith/engine-notifications",
+              "langsmith/engine-fix-validation",
+              "langsmith/engine-red-teaming",
+              "langsmith/engine-security",
+              {
+                "group": "Self-hosted and BYOC",
+                "pages": [
+                  "langsmith/engine-self-hosted",
+                  "langsmith/engine-self-hosted-model-providers",
+                  "langsmith/engine-self-hosted-github"
+                ]
+              }
+            ]
           }
         ]
       },
       {
-        "product": "PRODUCTS AND SETUP",
+        "product": "AGENT GOVERNANCE",
         "menu": [
           {
             "item": "LangSmith setup",
@@ -2239,13 +2380,13 @@
                     ]
                   },
                   {
-                    "group": "Agent-based workspaces",
+                    "group": "Agent Registry",
                     "pages": [
-                      "langsmith/agents",
+                      "langsmith/agent-registry",
                       "langsmith/agent-environments",
                       "langsmith/navigate-agents",
                       "langsmith/create-an-agent",
-                      "langsmith/build-an-agent",
+                      "langsmith/build-an-agent-link",
                       "langsmith/deploy-to-agent-environment"
                     ]
                   }
@@ -2274,6 +2415,14 @@
                 "pages": [
                   "langsmith/cloud",
                   {
+                    "group": "Network",
+                    "pages": [
+                      "langsmith/cloud-ip-allowlist",
+                      "langsmith/cloud-private-connectivity"
+                    ]
+                  },
+                  "langsmith/cloud-rate-limits",
+                  {
                     "group": "Reference",
                     "pages": [
                       "langsmith/changelog",
@@ -2289,17 +2438,43 @@
                 "pages": [
                   "langsmith/byoc",
                   "langsmith/byoc-why",
-                  "langsmith/byoc-architecture",
                   "langsmith/byoc-shared-responsibility",
-                  "langsmith/byoc-onboarding",
-                  "langsmith/byoc-byovpc",
-                  "langsmith/byoc-byoiam",
-                  "langsmith/byoc-migration",
                   "langsmith/byoc-usage",
-                  "langsmith/byoc-operations",
-                  "langsmith/byoc-billing",
-                  "langsmith/byoc-data-plane-cost",
-                  "langsmith/byoc-faq"
+                  "langsmith/byoc-migration",
+                  "langsmith/byoc-faq",
+                  {
+                    "group": "AWS",
+                    "pages": [
+                      "langsmith/byoc-onboarding-aws",
+                      "langsmith/byoc-architecture-aws",
+                      "langsmith/byoc-byovpc-aws",
+                      "langsmith/byoc-byoiam-aws",
+                      "langsmith/byoc-byok-aws",
+                      "langsmith/byoc-operations-aws",
+                      "langsmith/byoc-billing-aws",
+                      "langsmith/byoc-data-plane-cost-aws"
+                    ]
+                  },
+                  {
+                    "group": "Azure",
+                    "tag": "Beta",
+                    "pages": [
+                      "langsmith/byoc-onboarding-azure",
+                      "langsmith/byoc-architecture-azure",
+                      "langsmith/byoc-operations-azure",
+                      "langsmith/byoc-data-plane-cost-azure"
+                    ]
+                  },
+                  {
+                    "group": "GCP",
+                    "tag": "Beta",
+                    "pages": [
+                      "langsmith/byoc-onboarding-gcp",
+                      "langsmith/byoc-architecture-gcp",
+                      "langsmith/byoc-networking-gcp",
+                      "langsmith/byoc-data-plane-cost-gcp"
+                    ]
+                  }
                 ]
               },
               {
@@ -2366,6 +2541,7 @@
                             "root": "langsmith/enable-self-hosted-sandboxes",
                             "pages": [
                               "langsmith/self-host-sandbox-architecture",
+                              "langsmith/self-host-sandbox-separate-cluster",
                               "langsmith/self-host-sandbox-scaling",
                               "langsmith/self-host-sandbox-operations",
                               "langsmith/self-host-sandbox-egress-proxy"
@@ -2374,7 +2550,8 @@
                           "langsmith/engine-self-hosted-link",
                           "langsmith/enable-self-hosted-fleet",
                           "langsmith/llm-gateway-self-hosted",
-                          "langsmith/enable-self-hosted-deployment"
+                          "langsmith/tool-gateway-self-hosted",
+                          "langsmith/enable-self-hosted-agent-server"
                         ]
                       },
                       "langsmith/self-host-usage"
@@ -2392,6 +2569,7 @@
                       "langsmith/self-host-ui-customization",
                       "langsmith/self-host-ingress",
                       "langsmith/self-host-egress",
+                      "langsmith/self-host-telemetry-metrics",
                       "langsmith/self-host-mirroring-images",
                       "langsmith/self-host-fips",
                       "langsmith/troubleshooting"
@@ -2413,6 +2591,7 @@
                     "pages": [
                       "langsmith/self-host-basic-auth",
                       "langsmith/self-host-sso",
+                      "langsmith/self-host-sso-recovery",
                       "langsmith/self-host-user-management",
                       "langsmith/self-host-custom-tls-certificates",
                       "langsmith/self-host-using-an-existing-secret"
@@ -2421,21 +2600,40 @@
                   {
                     "group": "SmithDB",
                     "pages": [
-                      "langsmith/self-host-smithdb",
+                      {
+                        "group": "Overview",
+                        "root": "langsmith/self-host-smithdb",
+                        "pages": [
+                          "langsmith/self-host-smithdb-architecture",
+                          "langsmith/self-host-smithdb-data-paths"
+                        ]
+                      },
                       "langsmith/self-host-smithdb-features",
-                      "langsmith/self-host-smithdb-install",
-                      "langsmith/self-host-smithdb-infrastructure",
-                      "langsmith/self-host-smithdb-scale",
-                      "langsmith/self-host-smithdb-observability",
-                      "langsmith/self-host-smithdb-metrics",
-                      "langsmith/self-host-smithdb-migrate",
-                      "langsmith/self-host-smithdb-troubleshooting"
+                      {
+                        "group": "Install SmithDB",
+                        "root": "langsmith/self-host-smithdb-install",
+                        "pages": [
+                          "langsmith/self-host-smithdb-infrastructure",
+                          "langsmith/self-host-smithdb-scale",
+                          "langsmith/self-host-smithdb-migrate",
+                          "langsmith/self-host-smithdb-troubleshooting"
+                        ]
+                      },
+                      {
+                        "group": "Monitoring and alerting",
+                        "pages": [
+                          "langsmith/self-host-smithdb-observability",
+                          "langsmith/self-host-smithdb-common-issues",
+                          "langsmith/self-host-smithdb-metrics"
+                        ]
+                      }
                     ]
                   },
                   {
                     "group": "Manage an instance",
                     "pages": [
                       "langsmith/self-host-upgrades",
+                      "langsmith/self-host-agent-migration",
                       "langsmith/self-host-disaster-recovery",
                       "langsmith/self-host-organization-charts"
                     ]
@@ -2493,7 +2691,6 @@
                         "pages": [
                           "langsmith/set-up-hierarchy",
                           "langsmith/workload-isolation",
-                          "langsmith/migrate-to-agent-based-workspaces",
                           "langsmith/set-up-resource-tags",
                           "langsmith/model-configurations"
                         ]
@@ -2510,6 +2707,7 @@
                       "langsmith/user-management",
                       "langsmith/rbac",
                       "langsmith/abac",
+                      "langsmith/user-groups",
                       "langsmith/organization-workspace-operations",
                       "langsmith/authentication-methods",
                       "langsmith/jit-invite-sso"
@@ -2526,7 +2724,8 @@
                   {
                     "group": "Auditing",
                     "pages": [
-                      "langsmith/audit-logs"
+                      "langsmith/audit-logs",
+                      "langsmith/audit-logs-siem"
                     ]
                   },
                   {
@@ -2615,113 +2814,58 @@
             ]
           },
           {
-            "item": "No-code agents",
-            "icon": "wand",
-            "description": "Build agents without code",
+            "item": "Tool Gateway",
+            "icon": "/images/ui/tool-gateway.svg",
+            "description": "Govern agent tool calls",
             "pages": [
-              "langsmith/fleet/index",
               {
                 "group": "Get started",
+                "tag": "BETA",
                 "pages": [
-                  "langsmith/fleet/quickstart",
-                  "langsmith/fleet/essentials",
-                  "langsmith/fleet/templates",
-                  "langsmith/fleet/comparison"
+                  "langsmith/tool-gateway",
+                  "langsmith/tool-gateway-quickstart",
+                  "langsmith/tool-gateway-how-it-works"
                 ]
               },
               {
-                "group": "Configure",
+                "group": "Set up tools",
                 "pages": [
-                  "langsmith/fleet/workspace-admin",
-                  "langsmith/fleet/agent-identity",
-                  "langsmith/fleet/manage-agent-settings",
-                  "langsmith/fleet/computer-use"
+                  "langsmith/tool-gateway-servers",
+                  "langsmith/tool-gateway-connect-accounts",
+                  "langsmith/tool-gateway-tool-kits"
                 ]
               },
               {
-                "group": "Tools and automation",
+                "group": "Use tools",
                 "pages": [
-                  "langsmith/fleet/tools",
-                  "langsmith/fleet/channels",
-                  "langsmith/fleet/schedules",
-                  "langsmith/fleet/skills",
-                  "langsmith/fleet/slack-app",
-                  "langsmith/fleet/teams-app",
-                  "langsmith/fleet/remote-mcp-servers",
-                  "langsmith/fleet/arcade",
-                  "langsmith/fleet/salesforce"
+                  "langsmith/tool-gateway-clients",
+                  "langsmith/tool-gateway-call-tools",
+                  "langsmith/tool-gateway-identity"
                 ]
               },
               {
-                "group": "Advanced",
+                "group": "Govern and observe",
                 "pages": [
-                  "langsmith/fleet/code",
-                  "langsmith/fleet/mcp-framework",
-                  "langsmith/fleet/webhooks",
-                  "langsmith/fleet/auth-format"
+                  "langsmith/tool-gateway-policies",
+                  "langsmith/tool-gateway-traces"
                 ]
               },
               {
-                "group": "Additional resources",
+                "group": "Reference",
                 "pages": [
-                  "langsmith/fleet/access-and-oversight",
-                  "langsmith/fleet/self-hosted-link",
-                  "langsmith/fleet/changelog"
+                  {
+                    "group": "Tool Gateway API",
+                    "boost": 0.3,
+                    "pages": [
+                      "langsmith/tool-gateway-api-ref"
+                    ],
+                    "openapi": {
+                      "source": "langsmith/tool-gateway-openapi.json",
+                      "directory": "langsmith/tool-gateway-api"
+                    }
+                  }
                 ]
               }
-            ]
-          },
-          {
-            "item": "Engine",
-            "icon": "/images/brand/engine-icon-no-bg-dark.svg",
-            "description": "Find and fix agent issues",
-            "pages": [
-              "langsmith/engine",
-              "langsmith/engine-setup",
-              "langsmith/engine-issues",
-              "langsmith/engine-repositories",
-              "langsmith/engine-notifications",
-              "langsmith/engine-fix-validation",
-              "langsmith/engine-red-teaming",
-              "langsmith/engine-security",
-              {
-                "group": "Self-hosted and BYOC",
-                "pages": [
-                  "langsmith/engine-self-hosted",
-                  "langsmith/engine-self-hosted-model-providers",
-                  "langsmith/engine-self-hosted-github"
-                ]
-              }
-            ]
-          },
-          {
-            "item": "Deep Agents Code",
-            "icon": "code",
-            "description": "Code with an agent in your terminal",
-            "pages": [
-              "oss/deepagents/code/overview",
-              "oss/deepagents/code/quickstart",
-              "oss/deepagents/code/cli-reference",
-              "oss/deepagents/code/approval-modes",
-              "oss/deepagents/code/goals-and-rubrics",
-              "oss/deepagents/code/plugins",
-              "oss/deepagents/code/extensions",
-              "oss/deepagents/code/memory-and-skills",
-              "oss/deepagents/code/remote-sandboxes",
-              "oss/deepagents/code/subagents",
-              "oss/deepagents/code/providers",
-              {
-                "group": "Configuration",
-                "root": "oss/deepagents/code/configuration",
-                "expanded": true,
-                "pages": [
-                  "oss/deepagents/code/credentials",
-                  "oss/deepagents/code/config-file",
-                  "oss/deepagents/code/hooks",
-                  "oss/deepagents/code/mcp-tools"
-                ]
-              },
-              "oss/deepagents/code/changelog"
             ]
           }
         ]
@@ -2739,6 +2883,82 @@
     }
   },
   "redirects": [
+    {
+      "source": "/langsmith/migrate-to-agent-based-workspaces",
+      "destination": "/langsmith/self-host-agent-migration"
+    },
+    {
+      "source": "/langsmith/teams",
+      "destination": "/langsmith/user-groups"
+    },
+    {
+      "source": "/langsmith/deployment",
+      "destination": "/langsmith/deploy-overview"
+    },
+    {
+      "source": "/langsmith/monitor-deployment",
+      "destination": "/langsmith/monitor-agent-server"
+    },
+    {
+      "source": "/langsmith/manage-deployment",
+      "destination": "/langsmith/manage-agent-server"
+    },
+    {
+      "source": "/langsmith/enable-self-hosted-deployment",
+      "destination": "/langsmith/enable-self-hosted-agent-server"
+    },
+    {
+      "source": "/langsmith/deployment-revisions",
+      "destination": "/langsmith/agent-server-revisions"
+    },
+    {
+      "source": "/langsmith/byoc-azure-onboarding",
+      "destination": "/langsmith/byoc-onboarding-azure"
+    },
+    {
+      "source": "/langsmith/byoc-azure-architecture",
+      "destination": "/langsmith/byoc-architecture-azure"
+    },
+    {
+      "source": "/langsmith/byoc-gcp-onboarding",
+      "destination": "/langsmith/byoc-onboarding-gcp"
+    },
+    {
+      "source": "/langsmith/byoc-gcp-architecture",
+      "destination": "/langsmith/byoc-architecture-gcp"
+    },
+    {
+      "source": "/langsmith/byoc-onboarding",
+      "destination": "/langsmith/byoc-onboarding-aws"
+    },
+    {
+      "source": "/langsmith/byoc-architecture",
+      "destination": "/langsmith/byoc-architecture-aws"
+    },
+    {
+      "source": "/langsmith/byoc-byovpc",
+      "destination": "/langsmith/byoc-byovpc-aws"
+    },
+    {
+      "source": "/langsmith/byoc-byoiam",
+      "destination": "/langsmith/byoc-byoiam-aws"
+    },
+    {
+      "source": "/langsmith/byoc-operations",
+      "destination": "/langsmith/byoc-operations-aws"
+    },
+    {
+      "source": "/langsmith/byoc-billing",
+      "destination": "/langsmith/byoc-billing-aws"
+    },
+    {
+      "source": "/langsmith/byoc-data-plane-cost",
+      "destination": "/langsmith/byoc-data-plane-cost-aws"
+    },
+    {
+      "source": "/langsmith/agents",
+      "destination": "/langsmith/agent-registry"
+    },
     {
       "source": "/langsmith/log-traces-to-project",
       "destination": "/langsmith/log-traces-to-agent"
@@ -2893,7 +3113,15 @@
     },
     {
       "source": "/langsmith/develop-agents-overview",
-      "destination": "/langsmith/agent-server-overview"
+      "destination": "/langsmith/agent-server"
+    },
+    {
+      "source": "/langsmith/agent-server-overview",
+      "destination": "/langsmith/agent-server"
+    },
+    {
+      "source": "/langsmith/deployment-quickstart-da",
+      "destination": "/langsmith/python/managed-deep-agents-quickstart"
     },
     {
       "source": "/langsmith/core-capabilities",
@@ -3000,6 +3228,26 @@
       "destination": "/langsmith/python/managed-deep-agents-channels-http"
     },
     {
+      "source": "/langsmith/managed-deep-agents-patterns",
+      "destination": "/langsmith/python/managed-deep-agents-patterns"
+    },
+    {
+      "source": "/langsmith/managed-deep-agents-watch-mode",
+      "destination": "/langsmith/python/managed-deep-agents-watch-mode"
+    },
+    {
+      "source": "/langsmith/managed-deep-agents-goal-oriented",
+      "destination": "/langsmith/python/managed-deep-agents-goal-oriented"
+    },
+    {
+      "source": "/langsmith/managed-deep-agents-dreaming",
+      "destination": "/langsmith/python/managed-deep-agents-dreaming"
+    },
+    {
+      "source": "/langsmith/managed-deep-agents-swarm",
+      "destination": "/langsmith/python/managed-deep-agents-swarm"
+    },
+    {
       "source": "/langsmith/managed-deep-agents-cli",
       "destination": "/langsmith/python/managed-deep-agents-cli"
     },
@@ -3038,6 +3286,14 @@
     {
       "source": "/langsmith/managed-deep-agents-memory",
       "destination": "/langsmith/python/managed-deep-agents-memory"
+    },
+    {
+      "source": "/langsmith/managed-deep-agents-design-agent",
+      "destination": "/langsmith/python/managed-deep-agents-design-agent"
+    },
+    {
+      "source": "/langsmith/managed-deep-agents-paid-media-agent",
+      "destination": "/langsmith/python/managed-deep-agents-paid-media-agent"
     },
     {
       "source": "/langsmith/managed-deep-agents-context-hub",
@@ -3122,6 +3378,18 @@
     {
       "source": "/langsmith/docker",
       "destination": "/langsmith/self-hosted"
+    },
+    {
+      "source": "/oss/langgraph/install",
+      "destination": "/oss/langgraph/quickstart"
+    },
+    {
+      "source": "/oss/python/langgraph/install",
+      "destination": "/oss/python/langgraph/quickstart"
+    },
+    {
+      "source": "/oss/javascript/langgraph/install",
+      "destination": "/oss/javascript/langgraph/quickstart"
     },
     {
       "source": "/oss/python/langgraph/memory",
@@ -3681,7 +3949,7 @@
     },
     {
       "source": "/langgraph-platform/index",
-      "destination": "/langsmith/deployment"
+      "destination": "/langsmith/deploy-overview"
     },
     {
       "source": "/langsmith/deploy-javascript-frameworks",
@@ -3689,7 +3957,7 @@
     },
     {
       "source": "/langsmith/deployments",
-      "destination": "/langsmith/deployment"
+      "destination": "/langsmith/deploy-overview"
     },
     {
       "source": "/langsmith/langgraph-platform-logs",
@@ -3737,11 +4005,11 @@
     },
     {
       "source": "/langgraph-platform/why-langgraph",
-      "destination": "/langsmith/deployment#agent-server"
+      "destination": "/langsmith/agent-server"
     },
     {
       "source": "/langsmith/app-development",
-      "destination": "/langsmith/deployment#agent-server"
+      "destination": "/langsmith/agent-server"
     },
     {
       "source": "/langgraph-platform/:path*",
@@ -4798,6 +5066,18 @@
     {
       "source": "/oss/integrations/providers/brightdata",
       "destination": "/oss/integrations/providers/overview"
+    },
+    {
+      "source": "/oss/python/integrations/providers/cala",
+      "destination": "https://docs.cala.ai"
+    },
+    {
+      "source": "/oss/javascript/integrations/providers/cala",
+      "destination": "https://docs.cala.ai"
+    },
+    {
+      "source": "/oss/integrations/providers/cala",
+      "destination": "https://docs.cala.ai"
     },
     {
       "source": "/oss/python/integrations/providers/cloro",
@@ -6213,7 +6493,7 @@
     },
     {
       "source": "/langsmith/deploy-self-hosted-full-platform",
-      "destination": "/langsmith/enable-self-hosted-deployment"
+      "destination": "/langsmith/enable-self-hosted-agent-server"
     },
     {
       "source": "/oss/langchain/:path*",
@@ -6230,6 +6510,602 @@
     {
       "source": "/oss/integrations/:path*",
       "destination": "/oss/python/integrations/:path*"
+    },
+    {
+      "source": "/oss/langgraph/use-functional-api#creating-a-simple-workflow",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/use-functional-api#creating-a-simple-workflow",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/use-functional-api#creating-a-simple-workflow",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/use-functional-api#parallel-execution",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/use-functional-api#parallel-execution",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/use-functional-api#parallel-execution",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/use-functional-api#calling-graphs",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/use-functional-api#calling-graphs",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/use-functional-api#calling-graphs",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/use-functional-api#call-other-entrypoints",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/use-functional-api#call-other-entrypoints",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/use-functional-api#call-other-entrypoints",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/use-functional-api#streaming",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/use-functional-api#streaming",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/use-functional-api#streaming",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-streaming#streaming",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-streaming#streaming",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-streaming#streaming",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/use-functional-api#retry-policy",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/use-functional-api#retry-policy",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/use-functional-api#retry-policy",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/use-functional-api#set-task-and-entrypoint-timeouts",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/use-functional-api#set-task-and-entrypoint-timeouts",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/use-functional-api#set-task-and-entrypoint-timeouts",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/use-functional-api#caching-tasks",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/use-functional-api#caching-tasks",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/use-functional-api#caching-tasks",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/use-functional-api#resuming-after-an-error",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/use-functional-api#resuming-after-an-error",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/use-functional-api#resuming-after-an-error",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-tasks#retry-policy",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-tasks#retry-policy",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-tasks#retry-policy",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-tasks#set-task-and-entrypoint-timeouts",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-tasks#set-task-and-entrypoint-timeouts",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-tasks#set-task-and-entrypoint-timeouts",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-tasks#caching-tasks",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-tasks#caching-tasks",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-tasks#caching-tasks",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-tasks#resuming-after-an-error",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-tasks#resuming-after-an-error",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-tasks#resuming-after-an-error",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/use-functional-api#human-in-the-loop",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/use-functional-api#human-in-the-loop",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/use-functional-api#human-in-the-loop",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/use-functional-api#basic-human-in-the-loop-workflow",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/use-functional-api#basic-human-in-the-loop-workflow",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/use-functional-api#basic-human-in-the-loop-workflow",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/use-functional-api#review-tool-calls",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/use-functional-api#review-tool-calls",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/use-functional-api#review-tool-calls",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-human-in-the-loop#human-in-the-loop",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-human-in-the-loop#human-in-the-loop",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-human-in-the-loop#human-in-the-loop",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-human-in-the-loop#basic-human-in-the-loop-workflow",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-human-in-the-loop#basic-human-in-the-loop-workflow",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-human-in-the-loop#basic-human-in-the-loop-workflow",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/use-functional-api#short-term-memory",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/use-functional-api#short-term-memory",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/use-functional-api#short-term-memory",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/use-functional-api#long-term-memory",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/use-functional-api#long-term-memory",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/use-functional-api#long-term-memory",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-memory#short-term-memory",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-memory#short-term-memory",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-memory#short-term-memory",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-memory#long-term-memory",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-memory#long-term-memory",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-memory#long-term-memory",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-memory#decouple-return-value-from-saved-value",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-memory#decouple-return-value-from-saved-value",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-memory#decouple-return-value-from-saved-value",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-memory#manage-checkpoints",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-memory#manage-checkpoints",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-memory#manage-checkpoints",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-memory#chatbot-example",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-memory#chatbot-example",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-memory#chatbot-example",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/use-functional-api#workflows",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/use-functional-api#workflows",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/use-functional-api#workflows",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/use-functional-api#integrate-with-other-libraries",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/use-functional-api#integrate-with-other-libraries",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/use-functional-api#integrate-with-other-libraries",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-workflows#creating-a-simple-workflow",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-workflows#creating-a-simple-workflow",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-workflows#creating-a-simple-workflow",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-workflows#parallel-execution",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-workflows#parallel-execution",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-workflows#parallel-execution",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-workflows#calling-graphs",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-workflows#calling-graphs",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-workflows#calling-graphs",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-workflows#workflows",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-workflows#workflows",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-workflows#workflows",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-workflows#integrate-with-other-libraries",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-workflows#integrate-with-other-libraries",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-workflows#integrate-with-other-libraries",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/thinking-in-langgraph",
+      "destination": "/oss/langgraph/thinking-in-graph-api"
+    },
+    {
+      "source": "/oss/python/langgraph/thinking-in-langgraph",
+      "destination": "/oss/python/langgraph/thinking-in-graph-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/thinking-in-langgraph",
+      "destination": "/oss/javascript/langgraph/thinking-in-graph-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api#executing",
+      "destination": "/oss/langgraph/functional-api#run-and-resume"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api#executing",
+      "destination": "/oss/python/langgraph/functional-api#run-and-resume"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api#executing",
+      "destination": "/oss/javascript/langgraph/functional-api#run-and-resume"
+    },
+    {
+      "source": "/oss/langgraph/functional-api#resuming",
+      "destination": "/oss/langgraph/functional-api#run-and-resume"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api#resuming",
+      "destination": "/oss/python/langgraph/functional-api#run-and-resume"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api#resuming",
+      "destination": "/oss/javascript/langgraph/functional-api#run-and-resume"
+    },
+    {
+      "source": "/oss/langgraph/functional-api#example",
+      "destination": "/oss/langgraph/functional-api#pause-for-human-review"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api#example",
+      "destination": "/oss/python/langgraph/functional-api#pause-for-human-review"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api#example",
+      "destination": "/oss/javascript/langgraph/functional-api#pause-for-human-review"
+    },
+    {
+      "source": "/oss/langgraph/functional-api#entrypointfinal",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api#entrypointfinal",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api#entrypointfinal",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/thinking-in-functional-api",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/thinking-in-functional-api",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/thinking-in-functional-api",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/use-functional-api",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/use-functional-api",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/use-functional-api",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-workflows",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-workflows",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-workflows",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-tasks",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-tasks",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-tasks",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-streaming",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-streaming",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-streaming",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-human-in-the-loop",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-human-in-the-loop",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-human-in-the-loop",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/functional-api-memory",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/functional-api-memory",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/functional-api-memory",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/fault-tolerance#functional-api",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/fault-tolerance#functional-api",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/fault-tolerance#functional-api",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/langgraph/choosing-apis",
+      "destination": "/oss/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/python/langgraph/choosing-apis",
+      "destination": "/oss/python/langgraph/functional-api"
+    },
+    {
+      "source": "/oss/javascript/langgraph/choosing-apis",
+      "destination": "/oss/javascript/langgraph/functional-api"
+    },
+    {
+      "source": "/langsmith/cloud#allowlisting-ip-addresses",
+      "destination": "/langsmith/cloud-ip-allowlist#allowlisting-ip-addresses"
+    },
+    {
+      "source": "/langsmith/cloud#egress-from-langchain-saas",
+      "destination": "/langsmith/cloud-ip-allowlist#egress-from-langchain-saas"
+    },
+    {
+      "source": "/langsmith/cloud#allow-vertex-ai-access",
+      "destination": "/langsmith/cloud-ip-allowlist#allow-vertex-ai-access"
+    },
+    {
+      "source": "/langsmith/cloud#egress-ip-inventory",
+      "destination": "/langsmith/cloud-ip-allowlist#egress-ip-inventory"
+    },
+    {
+      "source": "/langsmith/cloud#ingress-into-langchain-saas",
+      "destination": "/langsmith/cloud-ip-allowlist#ingress-into-langchain-saas"
+    },
+    {
+      "source": "/langsmith/cloud#private-connectivity-enterprise",
+      "destination": "/langsmith/cloud-private-connectivity#private-connectivity-enterprise"
+    },
+    {
+      "source": "/langsmith/cloud#api-rate-limits",
+      "destination": "/langsmith/cloud-rate-limits#api-rate-limits"
+    },
+    {
+      "source": "/langsmith/cloud#rate-limit-categories",
+      "destination": "/langsmith/cloud-rate-limits#rate-limit-categories"
     }
   ]
 }

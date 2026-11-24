@@ -24,7 +24,7 @@ You can add examples with attachments to a dataset in a few different ways.
 
 #### From existing runs
 
-When adding runs to a LangSmith dataset, attachments can be selectively propagated from the source run to the destination example. To learn more, please see [Manage datasets in application](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project).
+When adding runs to a LangSmith dataset, attachments can be selectively propagated from the source run to the destination example. To learn more, please see [Manage datasets in application](/langsmith/manage-datasets-in-application#manually-from-an-agent-environment).
 
 ![Add trace with attachments to dataset](/langsmith/images/add-trace-with-attachments-to-dataset.png)
 
@@ -453,7 +453,7 @@ def valid_image_description(outputs: dict, attachments: dict) -> bool:
 
   image_url = attachments["my_img"]["presigned_url"]
   response = client.beta.chat.completions.parse(
-      model="gpt-5.5",
+      model="gpt-6.1-sol",
       messages=[
           {
               "role": "system",
@@ -499,7 +499,7 @@ Please carefully review the image and the description to determine if the descri
 
   const imageUrl = attachments?.["my_img"]?.presigned_url
   const completion = await client.beta.chat.completions.parse({
-      model: "gpt-5.5",
+      model: "gpt-6.1-sol",
       messages: [
           {
               role: "system",

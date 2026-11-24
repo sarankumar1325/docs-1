@@ -96,7 +96,7 @@ We recommend you also set up [LangSmith Engine](/langsmith/engine), which monito
 Pass a `model` string in `provider:model` format, or an initialized model instance. See [supported models](/oss/python/deepagents/models#supported-models) for all providers and [suggested models](/oss/python/deepagents/models#suggested-models) for tested recommendations.
 
 <Tip>
-    Use the `provider:model` format (for example `openai:gpt-5.5`) to quickly switch between models.
+    Use the `provider:model` format (for example `openai:gpt-6.1-sol`) to quickly switch between models.
 </Tip>
 
 <ChatModelTabsDaPy />
@@ -191,7 +191,10 @@ With only a `model` (no other optional arguments), the main agent typically incl
 3. [`SummarizationMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)
 4. [`PatchToolCallsMiddleware`](https://reference.langchain.com/python/deepagents/middleware/patch_tool_calls/PatchToolCallsMiddleware)
 5. **Prompt caching** middleware (always registered; each entry no-ops on models it does not support)
-6. **Harness profile extras** and **excluded-tool filtering**, if the resolved model profile defines them
+6. **Harness profile extras**, if the resolved model profile defines them
+7. [`UnsupportedContentMiddleware`](https://reference.langchain.com/python/deepagents/middleware/unsupported_content/UnsupportedContentMiddleware)
+8. [`ModelRefusalMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/model_refusal/ModelRefusalMiddleware)
+9. **Excluded-tool filtering**, if the resolved model profile defines them
 
 
 
@@ -216,7 +219,13 @@ From first to last:
     </Note>
 
 11. `HumanInTheLoopMiddleware`: Only when you pass `interrupt_on`. Pauses for human approval or input at configured tool calls.
-12. **Excluded-tool filtering**: When the harness profile lists excluded tools, middleware removes those tools from the agent.
+12. [`UnsupportedContentMiddleware`](https://reference.langchain.com/python/deepagents/middleware/unsupported_content/UnsupportedContentMiddleware): Rewrites unsupported multimodal content in requests with a text placeholder.
+13. [`ModelRefusalMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/model_refusal/ModelRefusalMiddleware): Raises [`ModelRefusalError`](https://reference.langchain.com/python/langchain-core/exceptions/ModelRefusalError) when the model refuses. It runs after your middleware, so a [`ModelFallbackMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) you pass retries the request on the next model first. See [Handle a refusal](/oss/python/langchain/middleware/built-in#handle-a-refusal) for ways to respond.
+14. **Excluded-tool filtering**: When the harness profile lists excluded tools, middleware removes those tools from the agent.
+
+<Note>
+Built-in Deep Agents middleware set `trace_policy` to `TracePolicy(process_inputs=omit_payload)`, so LangSmith records an empty input for lifecycle-hook spans instead of the full agent state. Hook outputs, model calls, and tool calls are still traced. Middleware from `langchain` that does not set its own policy, such as human-in-the-loop, is not affected. Requires `deepagents>=0.7.9`.
+</Note>
 
 
 
@@ -298,7 +307,7 @@ from deepagents.backends import StateBackend
 from deepagents.middleware import SummarizationMiddleware
 
 backend = StateBackend()
-model = "openai:gpt-5.5"
+model = "openai:gpt-6.1-sol"
 
 custom_summarization = SummarizationMiddleware(
     model=model,
@@ -593,7 +602,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 
 
         <Note>
-            When deploying to [LangSmith Deployment](/langsmith/deployment), omit the `store` parameter. The platform automatically provisions a store for your agent.
+            When deploying to [LangSmith Agent Server](/langsmith/agent-server#persistence), omit the `store` parameter. The platform automatically provisions a store for your agent.
         </Note>
 
         <Tip>

@@ -3,12 +3,14 @@
     import { createDeepAgent, StoreBackend } from "deepagents";
     import { InMemoryStore } from "@langchain/langgraph";
     
-    const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+    const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
     
     const agent = createDeepAgent({
-      model: "google:gemini-3.6-flash",
+      model: "google:gemini-4-hydrogen",
       backend: new StoreBackend({
-        namespace: (rt) => [rt.serverInfo.user.identity],
+        namespace: ({ config }) => [
+          String(config?.configurable?.langgraph_auth_user_id),
+        ],
       }),
       store,
     });
@@ -18,12 +20,14 @@
     import { createDeepAgent, StoreBackend } from "deepagents";
     import { InMemoryStore } from "@langchain/langgraph";
     
-    const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+    const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
     
     const agent = createDeepAgent({
-      model: "openai:gpt-5.5",
+      model: "openai:gpt-6.1-sol",
       backend: new StoreBackend({
-        namespace: (rt) => [rt.serverInfo.user.identity],
+        namespace: ({ config }) => [
+          String(config?.configurable?.langgraph_auth_user_id),
+        ],
       }),
       store,
     });
@@ -33,12 +37,14 @@
     import { createDeepAgent, StoreBackend } from "deepagents";
     import { InMemoryStore } from "@langchain/langgraph";
     
-    const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+    const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
     
     const agent = createDeepAgent({
       model: "anthropic:claude-sonnet-5",
       backend: new StoreBackend({
-        namespace: (rt) => [rt.serverInfo.user.identity],
+        namespace: ({ config }) => [
+          String(config?.configurable?.langgraph_auth_user_id),
+        ],
       }),
       store,
     });
@@ -48,12 +54,14 @@
     import { createDeepAgent, StoreBackend } from "deepagents";
     import { InMemoryStore } from "@langchain/langgraph";
     
-    const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+    const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
     
     const agent = createDeepAgent({
       model: "openrouter:z-ai/glm-5.2",
       backend: new StoreBackend({
-        namespace: (rt) => [rt.serverInfo.user.identity],
+        namespace: ({ config }) => [
+          String(config?.configurable?.langgraph_auth_user_id),
+        ],
       }),
       store,
     });
@@ -63,12 +71,14 @@
     import { createDeepAgent, StoreBackend } from "deepagents";
     import { InMemoryStore } from "@langchain/langgraph";
     
-    const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+    const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
     
     const agent = createDeepAgent({
       model: "fireworks:accounts/fireworks/models/glm-5p2",
       backend: new StoreBackend({
-        namespace: (rt) => [rt.serverInfo.user.identity],
+        namespace: ({ config }) => [
+          String(config?.configurable?.langgraph_auth_user_id),
+        ],
       }),
       store,
     });
@@ -78,12 +88,14 @@
     import { createDeepAgent, StoreBackend } from "deepagents";
     import { InMemoryStore } from "@langchain/langgraph";
     
-    const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+    const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
     
     const agent = createDeepAgent({
       model: "baseten:zai-org/GLM-5.2",
       backend: new StoreBackend({
-        namespace: (rt) => [rt.serverInfo.user.identity],
+        namespace: ({ config }) => [
+          String(config?.configurable?.langgraph_auth_user_id),
+        ],
       }),
       store,
     });
@@ -93,12 +105,14 @@
     import { createDeepAgent, StoreBackend } from "deepagents";
     import { InMemoryStore } from "@langchain/langgraph";
     
-    const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+    const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
     
     const agent = createDeepAgent({
       model: "ollama:north-mini-code-1.0",
       backend: new StoreBackend({
-        namespace: (rt) => [rt.serverInfo.user.identity],
+        namespace: ({ config }) => [
+          String(config?.configurable?.langgraph_auth_user_id),
+        ],
       }),
       store,
     });

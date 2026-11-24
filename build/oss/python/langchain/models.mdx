@@ -7,6 +7,8 @@ boost: 2
 
 import ChatModelTabsPy from '/snippets/python/chat-model-tabs.mdx';
 import ChatModelTabsJS from '/snippets/python/chat-model-tabs-js.mdx';
+import ModelsParallelToolCallsPy from '/snippets/python/code-samples/models-parallel-tool-calls-py.mdx';
+import ModelsParallelToolCallsJs from '/snippets/python/code-samples/models-parallel-tool-calls-js.mdx';
 
 [LLMs](https://en.wikipedia.org/wiki/Large_language_model) are powerful AI tools that can interpret and generate text like humans. They're versatile enough to write content, translate languages, summarize, and answer questions without needing specialized training for each task.
 
@@ -126,7 +128,9 @@ model = init_chat_model(
 
 ### Connection resilience
 
-LangChain chat models automatically retry failed API requests with exponential backoff. By default, models retry up to **6 times** for network errors, rate limits (429), and server errors (5xx). Client errors like 401 (unauthorized) or 404 are not retried.
+Most LangChain chat model integrations automatically retry failed API requests with exponential backoff. They retry network errors, rate limits (429), and server errors (5xx). Client errors like 401 (unauthorized) or 404 are not retried.
+
+How many times a model retries by default depends on its integration. For example, `ChatOpenAI` and `ChatAnthropic` retry up to **2 times**, `ChatGoogleGenerativeAI` up to **6 times**, and `ChatOllama` does not retry.
 
 You can adjust `max_retries` and `timeout` when creating a model, then pass that instance to `create_agent`, `create_deep_agent`, or call it standalone:
 
@@ -134,7 +138,7 @@ You can adjust `max_retries` and `timeout` when creating a model, then pass that
 from langchain.chat_models import init_chat_model
 
 model = init_chat_model(
-    "google_genai:gemini-3.6-flash",
+    "google_genai:gemini-4-hydrogen",
     max_retries=10,  # Increase for unreliable networks (default: 6)
     timeout=120,  # Seconds; increase for slow connections
 )
@@ -536,10 +540,11 @@ Below, we show some common ways you can use tool calling.
         The model intelligently determines when parallel execution is appropriate based on the independence of the requested operations.
 
         <Tip>
-        Most models supporting tool calling enable parallel tool calls by default. Some (including [OpenAI](/oss/python/integrations/chat/openai) and [Anthropic](/oss/python/integrations/chat/anthropic)) allow you to disable this feature. To do this, set `parallel_tool_calls=False`:
-        ```python
-        model.bind_tools([get_weather], parallel_tool_calls=False)
-        ```
+        Most models supporting tool calling enable parallel tool calls by default.
+        Some (including [OpenAI](/oss/python/integrations/chat/openai) and [Anthropic](/oss/python/integrations/chat/anthropic)) allow you to disable this feature. To do this, set `parallel_tool_calls=False`:
+        <ModelsParallelToolCallsPy />
+
+
         </Tip>
     </Accordion>
     <Accordion title="Streaming tool calls" icon="rss">
@@ -689,6 +694,7 @@ Models can be requested to provide their response in a format matching a given s
         - `'json_mode'`: A precursor to `'json_schema'` offered by some providers. Generates valid JSON, but the schema must be described in the prompt.
     - **Include raw**: Set `include_raw=True` to get both the parsed output and the raw AI message.
     - **Validation**: Pydantic models provide automatic validation. `TypedDict` and JSON Schema require manual validation.
+    - **Refusals**: If the model refuses, structured output raises `ModelRefusalError`. See [Handle a model refusal](#handle-a-model-refusal) and [Structured output](/oss/python/langchain/structured-output#model-refusal).
 
     See your [provider's integration page](/oss/python/integrations/providers/overview) for supported methods and configuration options.
 </Note>
@@ -764,6 +770,40 @@ It can be useful to return the raw [`AIMessage`](https://reference.langchain.com
 
 
 </Accordion>
+
+### Handle a model refusal
+
+Providers report a refusal, such as a safety-policy refusal, as a successful response rather than an error. A plain model call returns the message with a [`refusal` content block](/oss/python/langchain/messages#content-block-reference). `with_structured_output` raises [`ModelRefusalError`](https://reference.langchain.com/python/langchain-core/exceptions/ModelRefusalError) from `langchain_core.exceptions` instead of a parsing error. The error's `raw_message` holds the refused response.
+
+```python
+from langchain_core.exceptions import ModelRefusalError
+
+model_with_structure = model.with_structured_output(Movie)
+
+try:
+    response = model_with_structure.invoke("Provide details about the movie Inception")
+except ModelRefusalError as error:
+    print(error)  # Model refused to produce the requested output (category='cyber'): ...
+    refused = error.raw_message
+```
+
+With `include_raw=True`, `with_structured_output` returns the error as `parsing_error` instead of raising it:
+
+```python
+model_with_structure = model.with_structured_output(Movie, include_raw=True)
+response = model_with_structure.invoke("Provide details about the movie Inception")
+if isinstance(response["parsing_error"], ModelRefusalError):
+    refused = response["raw"]
+```
+
+LangChain detects refusals from OpenAI, Anthropic, and Gemini models. For agents, `response_format` in `create_agent` raises `ModelRefusalError` when you add [`ModelRefusalMiddleware`](/oss/python/langchain/middleware/built-in#model-refusal); see [Structured output](/oss/python/langchain/structured-output#model-refusal) and [Handle a refusal](/oss/python/langchain/middleware/built-in#handle-a-refusal).
+
+<Note>
+    Refusal handling requires `langchain-core>=1.7.5`, and `langchain-google-genai>=4.4.3` for Gemini. If you upgrade `langchain-core` to 1.7.5 or later, also upgrade to `langchain-openai>=1.7.4`. Earlier versions raise a generic `ValueError` instead of `OpenAIRefusalError` for Responses API structured output refusals.
+</Note>
+
+
+
 
 ---
 
@@ -1083,7 +1123,7 @@ To help manage rate limits, chat model integrations accept a `rate_limiter` para
     )
 
     model = init_chat_model(
-        model="gpt-5.5",
+        model="gpt-6.1-sol",
         model_provider="openai",
         rate_limiter=rate_limiter  # [!code highlight]
     )
@@ -1134,7 +1174,7 @@ You can configure a custom base URL for providers that implement the OpenAI Chat
     from langchain_openai import ChatOpenAI
 
     model = ChatOpenAI(
-        model="gpt-5.5",
+        model="gpt-6.1-sol",
         openai_proxy="http://proxy.example.com:8080"
     )
     ```
@@ -1153,7 +1193,7 @@ Certain models can be configured to return token-level log probabilities represe
 
 ```python
 model = init_chat_model(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     model_provider="openai"
 ).bind(logprobs=True)
 
@@ -1363,13 +1403,13 @@ configurable_model.invoke(
     class GetWeather(BaseModel):
         """Get the current weather in a given location"""
 
-            location: str = Field(description="The city and state, e.g. San Francisco, CA")
+        location: str = Field(description="The city and state, e.g. San Francisco, CA")
 
 
     class GetPopulation(BaseModel):
         """Get the current population in a given location"""
 
-            location: str = Field(description="The city and state, e.g. San Francisco, CA")
+        location: str = Field(description="The city and state, e.g. San Francisco, CA")
 
 
     model = init_chat_model(temperature=0)
@@ -1433,7 +1473,7 @@ from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResp
 
 
 basic_model = ChatOpenAI(model="gpt-5.4-mini")
-advanced_model = ChatOpenAI(model="gpt-5.5")
+advanced_model = ChatOpenAI(model="gpt-6.1-sol")
 
 @wrap_model_call
 def dynamic_model_selection(request: ModelRequest, handler) -> ModelResponse:

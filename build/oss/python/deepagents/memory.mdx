@@ -3,6 +3,9 @@ title: Memory
 description: Add persistent memory to agents built with Deep Agents so they learn and improve across conversations
 ---
 
+import MemoryConsolidationAgentPy from '/snippets/python/code-samples/memory-consolidation-agent-py.mdx';
+import MemoryConsolidationAgentJs from '/snippets/python/code-samples/memory-consolidation-agent-js.mdx';
+
 Memory lets your agent learn and improve across conversations. Deep Agents makes memory first class with filesystem-backed memory: the agent reads and writes memory as files, and you control where those files are stored using [backends](/oss/python/deepagents/backends).
 
 <Tip>
@@ -47,7 +50,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     memory=["/memories/AGENTS.md"],
     skills=["/skills/"],
     backend=CompositeBackend(
@@ -75,6 +78,8 @@ agent = create_deep_agent(
 
 Populate the store with initial memories, then invoke the agent across two threads to see it remember and update what it learns.
 
+`CompositeBackend` removes each route prefix before forwarding file operations. Seed backend-relative keys such as `/AGENTS.md` and `/langgraph-docs/SKILL.md`, not the agent-facing `/memories/` or `/skills/` paths.
+
 ```python
 from langchain_core.utils.uuid import uuid7
 
@@ -88,7 +93,7 @@ store = InMemoryStore()  # Use platform store when deploying to LangSmith
 # Seed the memory file
 store.put(
     ("my-agent",),
-    "/memories/AGENTS.md",
+    "/AGENTS.md",
     create_file_data("""## Response style
 - Keep responses concise
 - Use code examples where possible
@@ -98,7 +103,7 @@ store.put(
 # Seed a skill
 store.put(
     ("my-agent",),
-    "/skills/langgraph-docs/SKILL.md",
+    "/langgraph-docs/SKILL.md",
     create_file_data("""---
 name: langgraph-docs
 description: Fetch relevant LangGraph documentation to provide accurate guidance.
@@ -111,17 +116,17 @@ Use the fetch_url tool to read https://docs.langchain.com/llms.txt, then fetch r
 )
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     memory=["/memories/AGENTS.md"],
     skills=["/skills/"],
-    backend=lambda rt: CompositeBackend(
-        default=StateBackend(rt),
+    backend=CompositeBackend(
+        default=StateBackend(),
         routes={
             "/memories/": StoreBackend(
-                rt, namespace=lambda rt: ("my-agent",)
+                namespace=lambda rt: ("my-agent",)
             ),
             "/skills/": StoreBackend(
-                rt, namespace=lambda rt: ("my-agent",)
+                namespace=lambda rt: ("my-agent",)
             ),
         },
     ),
@@ -159,7 +164,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     memory=["/memories/preferences.md"],
     skills=["/skills/"],
     backend=CompositeBackend(
@@ -197,7 +202,7 @@ store = InMemoryStore()  # Use platform store when deploying to LangSmith
 # Seed preferences for two users
 store.put(
     ("user-alice",),
-    "/memories/preferences.md",
+    "/preferences.md",
     create_file_data("""## Preferences
 - Likes concise bullet points
 - Prefers Python examples
@@ -205,7 +210,7 @@ store.put(
 )
 store.put(
     ("user-bob",),
-    "/memories/preferences.md",
+    "/preferences.md",
     create_file_data("""## Preferences
 - Likes detailed explanations
 - Prefers TypeScript examples
@@ -215,7 +220,7 @@ store.put(
 # Seed a skill for Alice
 store.put(
     ("user-alice",),
-    "/skills/langgraph-docs/SKILL.md",
+    "/langgraph-docs/SKILL.md",
     create_file_data("""---
 name: langgraph-docs
 description: Fetch relevant LangGraph documentation to provide accurate guidance.
@@ -228,18 +233,16 @@ Use the fetch_url tool to read https://docs.langchain.com/llms.txt, then fetch r
 )
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     memory=["/memories/preferences.md"],
     skills=["/skills/"],
-    backend=lambda rt: CompositeBackend(
-        default=StateBackend(rt),
+    backend=CompositeBackend(
+        default=StateBackend(),
         routes={
             "/memories/": StoreBackend(
-                rt,
                 namespace=lambda rt: (rt.server_info.user.identity,),
             ),
             "/skills/": StoreBackend(
-                rt,
                 namespace=lambda rt: (rt.server_info.user.identity,),
             ),
         },
@@ -339,7 +342,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     memory=[
         "/memories/preferences.md",
         "/policies/compliance.md",
@@ -401,43 +404,7 @@ The recommended pattern is to deploy a **consolidation agent** alongside your ma
 
 The consolidation agent reads recent conversation history and merges key facts into the memory store. Register it alongside your main agent in `langgraph.json`:
 
-```python consolidation_agent.py
-from datetime import datetime, timedelta, timezone
-
-from deepagents import create_deep_agent
-from langchain.tools import tool, ToolRuntime
-from langgraph_sdk import get_client
-
-sdk_client = get_client(url="<DEPLOYMENT_URL>")
-
-
-@tool
-async def search_recent_conversations(query: str, runtime: ToolRuntime) -> str:
-    """Search this user's conversations updated in the last 6 hours."""
-    user_id = runtime.server_info.user.identity  # [!code highlight]
-
-    since = datetime.now(timezone.utc) - timedelta(hours=6)
-    threads = await sdk_client.threads.search(
-        metadata={"user_id": user_id},
-        updated_after=since.isoformat(),
-        limit=20,
-    )
-    conversations = []
-    for thread in threads:
-        history = await sdk_client.threads.get_history(
-            thread_id=thread["thread_id"]
-        )
-        conversations.append(history["values"]["messages"])
-    return str(conversations)
-
-
-agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
-    system_prompt="""Review recent conversations and update the user's memory file.
-Merge new facts, remove outdated information, and keep it concise.""",
-    tools=[search_recent_conversations],
-)
-```
+<MemoryConsolidationAgentPy />
 
 
 

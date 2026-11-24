@@ -395,13 +395,13 @@ def veggie_info(veggie_name: str) -> str:
 fruit_agent = create_agent(
     model="gpt-5.4-mini",
     tools=[fruit_info],
-    prompt="You are a fruit expert. Use the fruit_info tool. Respond in one sentence.",
+    system_prompt="You are a fruit expert. Use the fruit_info tool. Respond in one sentence.",
 )
 
 veggie_agent = create_agent(
     model="gpt-5.4-mini",
     tools=[veggie_info],
-    prompt="You are a veggie expert. Use the veggie_info tool. Respond in one sentence.",
+    system_prompt="You are a veggie expert. Use the veggie_info tool. Respond in one sentence.",
 )
 
 # Wrap subagents as tools for the outer agent
@@ -425,7 +425,7 @@ def ask_veggie_expert(question: str) -> str:
 agent = create_agent(
     model="gpt-5.4-mini",
     tools=[ask_fruit_expert, ask_veggie_expert],
-    prompt=(
+    system_prompt=(
         "You have two experts: ask_fruit_expert and ask_veggie_expert. "
         "ALWAYS delegate questions to the appropriate expert."
     ),
@@ -518,7 +518,7 @@ def fruit_info(fruit_name: str) -> str:
 fruit_agent = create_agent(
     model="gpt-5.4-mini",
     tools=[fruit_info],
-    prompt="You are a fruit expert. Use the fruit_info tool. Respond in one sentence.",
+    system_prompt="You are a fruit expert. Use the fruit_info tool. Respond in one sentence.",
     checkpointer=True,  # [!code highlight]
 )
 
@@ -537,7 +537,7 @@ def ask_fruit_expert(question: str) -> str:
 agent = create_agent(
     model="gpt-5.4-mini",
     tools=[ask_fruit_expert],
-    prompt="You have a fruit expert. ALWAYS delegate fruit questions to ask_fruit_expert.",
+    system_prompt="You have a fruit expert. ALWAYS delegate fruit questions to ask_fruit_expert.",
     middleware=[  # [!code highlight]
         ToolCallLimitMiddleware(tool_name="ask_fruit_expert", run_limit=1),  # [!code highlight]
     ],  # [!code highlight]
@@ -601,11 +601,11 @@ agent = create_agent(
 
   fruit_agent = create_sub_agent(
       "gpt-5.4-mini", name="fruit_agent",
-      tools=[fruit_info], prompt="...", checkpointer=True,
+      tools=[fruit_info], system_prompt="...", checkpointer=True,
   )
   veggie_agent = create_sub_agent(
       "gpt-5.4-mini", name="veggie_agent",
-      tools=[veggie_info], prompt="...", checkpointer=True,
+      tools=[veggie_info], system_prompt="...", checkpointer=True,
   )
 
   config = {"configurable": {"thread_id": "1"}}
@@ -762,28 +762,35 @@ Viewing subgraph state requires that LangGraph can **statically discover** the s
 
 ## Stream subgraph outputs
 
-To observe nested graph executions, we recommend [event streaming](/oss/python/langgraph/event-streaming): the `stream.subgraphs` projection discovers each nested run and exposes its `path`, `messages`, and `values` without parsing namespace strings.
+To include outputs from subgraphs in the streamed outputs, set the `subgraphs` option in the `stream` method of the parent graph. This streams outputs from both the parent graph and any subgraphs.
 
-```python
-stream = graph.stream_events({"foo": "foo"}, version="v3")  # [!code highlight]
+<Tabs>
+    <Tab title="v2 (LangGraph 1.1 or later)">
+    With `version="v2"`, subgraph events use the same `StreamPart` format. The `ns` field identifies the source graph:
 
-for subgraph in stream.subgraphs:
-    print(subgraph.graph_name, subgraph.path)
-
-    for snapshot in subgraph.values:
-        print(subgraph.path, snapshot)
-```
-
-If you need the raw protocol events, iterate the stream directly and filter on `event["method"]` and `event["params"]["namespace"]`:
-
-```python
-from langgraph.stream import UpdatesTransformer
-
-stream = graph.stream_events({"foo": "foo"}, version="v3", transformers=[UpdatesTransformer])
-for event in stream:
-    if event["method"] == "updates":
-        print(event["params"]["namespace"], event["params"]["data"])
-```
+    ```python
+    for chunk in graph.stream(
+        {"foo": "foo"},
+        subgraphs=True, # [!code highlight]
+        stream_mode="updates",
+        version="v2", # [!code highlight]
+    ):
+        print(chunk["type"])  # "updates"
+        print(chunk["ns"])    # () for root, ("node_2:<task_id>",) for subgraph
+        print(chunk["data"])  # {"node_name": {"key": "value"}}
+    ```
+    </Tab>
+    <Tab title="v1 (default)">
+    ```python
+    for chunk in graph.stream(
+        {"foo": "foo"},
+        subgraphs=True, # [!code highlight]
+        stream_mode="updates",
+    ):
+        print(chunk)
+    ```
+    </Tab>
+</Tabs>
 
 
 
